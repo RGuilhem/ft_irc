@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:42:49 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 10:59:40 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/19 12:07:51 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	main(int argc, char *argv[])
 {
 	if (argc == 3)
 	{
+		Server	serv(argv[1], argv[2]);
+		serv.lnch();
 	}
 	else
 	{

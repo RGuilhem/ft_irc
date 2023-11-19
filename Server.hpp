@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 10:07:19 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/19 12:06:49 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,19 @@
 # define SERVER_HPP
 
 # include <string>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netdb.h>
+
+# define BACKLOG 10
 
 class Server
 {
 	private:
-		std::string	password;
-		int			port;
+		std::string		password;
+		std::string		port;
+		int				iport;
+		int				sockfd;
 	public:
 		Server(void);
 		~Server(void);
@@ -27,6 +34,11 @@ class Server
 		Server &operator=(Server const &s);
 
 		Server(std::string port_str, std::string pass);
+		void	lnch(void);
+		void	run(void);
+		std::string	getPort(void) const;
 };
+
+std::ostream &operator<<(std::ostream &o, const Server &s);
 
 #endif

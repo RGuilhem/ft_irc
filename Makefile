@@ -3,6 +3,7 @@ FLAGS = -Wall -Wextra -Werror -g3 -std=c++98
 RM = rm -rf
 
 SRC = main.cpp			\
+	  Server.cpp
 #SRC_DIR = $(addprefix src/, $(SRC))
 OBJ = ${SRC:.cpp=.o}
 
