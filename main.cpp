@@ -6,12 +6,14 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:42:49 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 12:07:51 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/19 12:48:02 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <iostream>
+
+bool	server_off = false;
 
 int	main(int argc, char *argv[])
 {
@@ -19,6 +21,7 @@ int	main(int argc, char *argv[])
 	{
 		Server	serv(argv[1], argv[2]);
 		serv.lnch();
+		serv.run();
 	}
 	else
 	{
