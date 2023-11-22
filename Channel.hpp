@@ -11,6 +11,12 @@ class Channel
     std::string         name;
     std::string         topic;
     std::list<Client>   users;
+    std::list<Client>   operators;
+
+    bool                invite_only;
+    bool                topic_operator;
+    std::string         password;
+    int                 user_limit;
 
     Channel(void);
   public:
