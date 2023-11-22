@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:29:46 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/19 14:33:16 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	int	received = recv(pfd.fd, clients.at(pfd.fd).getBuff(), BUFF_SIZE, 0);
 	if (received > 0) //GOOD data
 	{
-		std::cout << clients.at(pfd.fd).getBuff(); //TODO store result
+		std::cout << clients.at(pfd.fd).getBuff(); //TODO store result, treat it, broadcast
 	}
 	else
 	{
