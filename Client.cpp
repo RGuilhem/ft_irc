@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:11:33 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/22 21:33:54 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,14 @@
 
 Client::Client(int i) : fd(i)
 {
-	fd = i;
 }
 
-char	*Client::getBuff(void)
+char	*Client::getReadBuff(void)
 {
-	return (buff);
+	return (read_buff);
+}
+
+char	*Client::getSendBuff(void)
+{
+	return (read_buff);
 }

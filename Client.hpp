@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:12:52 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/22 21:32:56 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ class Client
 {
 	private:
 		int		fd;
-		char	buff[BUFF_SIZE];
+		char	read_buff[BUFF_SIZE];
+		char	send_buff[BUFF_SIZE];
 	public:
 		Client(int fd);
 
-		char	*getBuff(void);
+		char	*getReadBuff(void);
+		char	*getSendBuff(void);
 };
 
 #endif

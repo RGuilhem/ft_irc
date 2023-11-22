@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:33:16 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/22 21:32:08 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 	{
 		pollfd	new_node;
 		new_node.fd = confd;
-		new_node.events = POLLIN; //TODO add possiblity to add pollout
+		new_node.events = POLLIN | POLLOUT;
 		pollfds.push_back(new_node);
 		std::cout << "Run: new connection on fd: " << confd << std::endl;
 		clients.insert(std::pair<int, Client>(confd, Client(confd)));
@@ -167,10 +167,10 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
-	int	received = recv(pfd.fd, clients.at(pfd.fd).getBuff(), BUFF_SIZE, 0);
+	int	received = recv(pfd.fd, clients.at(pfd.fd).getReadBuff(), BUFF_SIZE, 0);
 	if (received > 0) //GOOD data
 	{
-		std::cout << clients.at(pfd.fd).getBuff(); //TODO store result, treat it, broadcast
+		std::cout << clients.at(pfd.fd).getReadBuff(); //TODO store result, treat it, broadcast
 	}
 	else
 	{
