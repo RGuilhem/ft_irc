@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:27:48 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:42:25 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	Server::lnch(void)
 
 void	Server::run(void)
 {
-	//TODO implement
 	std::cout << "Server running..." << std::endl;
 
 	std::vector<pollfd> pollfds;
@@ -121,23 +120,22 @@ void	Server::run(void)
 		int poll_count = poll((pollfd *)&pollfds[0], (unsigned int) pollfds.size(), -1);
 		if (poll_count == -1) {
 			std::cerr << "Error: poll" << std::endl;
-			std::exit(1);
+			std::exit(EXIT_FAILURE);
 		}
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
-			if (pollfds[i].revents & POLLIN)
+			pollfd	curr_poll = pollfds[i];
+			if (curr_poll.revents & POLLIN)
 			{
-				if (pollfds[i].fd == sockfd)
+				if (curr_poll.fd == sockfd)
 					this->newConnection(pollfds);
 				else
-					this->recvClient(pollfds, pollfds[i]);
+					this->recvClient(pollfds, curr_poll);
 			}
-			else if (pollfds[i].revents & POLLOUT)
+			else if (curr_poll.revents & POLLOUT)
 			{
-				if (pollfds[i].fd == sockfd)
-					std::cout << "POLLOUT on sockfd" << std::endl;
-				else
-					this->sendClient(pollfds, pollfds[i]);
+				if (curr_poll.fd != sockfd)
+					this->sendClient(pollfds, curr_poll);
 			}
 		}
 	}
