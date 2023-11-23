@@ -6,14 +6,12 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 14:05:04 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:49:59 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
-
-#define BUFF_SIZE 512
 
 # include <string>
 
@@ -28,8 +26,8 @@ class Client
 	public:
 		Client(int fd);
 
-		char	    *getReadBuffRaw(void);
-		char	    *getSendBuffRaw(void);
+		void		appendRead(std::string newData);
+
         std::string getReadBuff(void) const;
         std::string getSendBuff(void) const;
 };

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 14:05:42 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:53:05 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,12 @@
 
 Client::Client(int i) : fd(i)
 {
+	(void) fd;
 }
 
-char	*Client::getReadBuffRaw(void)
+void	Client::appendRead(std::string newData)
 {
-	return (&read_buff[0]);
-}
-
-char	*Client::getSendBuffRaw(void)
-{
-	return (&send_buff[0]);
+	read_buff += newData;
 }
 
 std::string Client::getReadBuff(void) const

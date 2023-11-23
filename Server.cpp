@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 14:05:06 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:54:38 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,12 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
-	int	received = recv(pfd.fd, clients.at(pfd.fd).getReadBuffRaw(), BUFF_SIZE, 0);
+	char	buff[BUFF_SIZE];
+	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0);
 	if (received > 0) //GOOD data
 	{
-		std::cout << clients.at(pfd.fd).getReadBuffRaw(); //TODO store result, treat it, broadcast
+		clients.at(pfd.fd).appendRead(buff);
+		std::cout << clients.at(pfd.fd).getReadBuff();
 	}
 	else
 	{

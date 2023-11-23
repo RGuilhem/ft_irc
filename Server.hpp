@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 14:04:32 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:10:17 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <vector>
 
 # define BACKLOG 10
+# define BUFF_SIZE 512
 
 extern bool server_off;
 
