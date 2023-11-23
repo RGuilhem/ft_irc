@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 14:10:17 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 15:10:18 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class Server
 		void			newConnection(std::vector<pollfd> &pollfds);
 		void			recvClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 		void			sendClient(std::vector<pollfd> &pollfds, pollfd &pfd);
+		void			parseMessage(Client &client);
 	public:
 		Server(void);
 		~Server(void);
