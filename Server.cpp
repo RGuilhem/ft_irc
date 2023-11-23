@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 15:19:27 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 16:04:14 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,8 @@ void	Server::parseMessage(Client &client)
 	std::string	message = client.getReadBuff();
 	if (message.find("\r\n") != std::string::npos)
 	{
-		std::cout << message;
+		client.clearEndReadBuff(); // TODO check if empty
+		std::cout << client.getReadBuff() << std::endl;
 		client.resetReadBuff();
 	}
 }

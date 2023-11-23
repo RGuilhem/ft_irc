@@ -6,11 +6,12 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 15:09:45 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 16:02:30 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include <iostream>
 
 Client::Client(int i) : fd(i)
 {
@@ -25,6 +26,12 @@ void	Client::appendRead(std::string newData)
 void	Client::resetReadBuff(void)
 {
 	read_buff.clear();
+}
+
+void	Client::clearEndReadBuff(void)
+{
+	read_buff.pop_back();
+	read_buff.pop_back();
 }
 
 std::string Client::getReadBuff(void) const
