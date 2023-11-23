@@ -4,6 +4,7 @@ RM = rm -rf
 
 SRC = main.cpp			\
 	  Server.cpp		\
+	  Channel.cpp		\
 	  Client.cpp
 #SRC_DIR = $(addprefix src/, $(SRC))
 OBJ = ${SRC:.cpp=.o}

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/22 21:32:56 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:05:04 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,23 @@
 
 #define BUFF_SIZE 512
 
+# include <string>
+
 class Client
 {
 	private:
-		int		fd;
-		char	read_buff[BUFF_SIZE];
-		char	send_buff[BUFF_SIZE];
+        std::string nick;
+        std::string name;
+		int		    fd;
+        std::string	read_buff;
+        std::string	send_buff;
 	public:
 		Client(int fd);
 
-		char	*getReadBuff(void);
-		char	*getSendBuff(void);
+		char	    *getReadBuffRaw(void);
+		char	    *getSendBuffRaw(void);
+        std::string getReadBuff(void) const;
+        std::string getSendBuff(void) const;
 };
 
 #endif

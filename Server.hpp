@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:14:41 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 14:04:32 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 # include <map>
+# include <vector>
 
 # define BACKLOG 10
 
