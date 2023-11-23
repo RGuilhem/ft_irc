@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/19 14:33:16 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/22 23:15:46 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <string>
+#include <cstdlib>
 
 Server::Server(void) //TODO Think about init values
 {
@@ -45,13 +47,13 @@ Server &Server::operator=(Server const &s)
 Server::Server(std::string port_str, std::string pass) : password(pass), port(port_str)
 {
 	try {
-		iport = std::stoi(port_str);
+		iport = std::atoi(port_str.c_str());
 		if (iport < 1 || iport > 65535)
 			throw std::invalid_argument("Invalid port number");
 	}
 	catch (std::exception &e) {
 		std::cerr << "Invalid port number" << std::endl;
-		exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
 	}
 }
 
@@ -67,7 +69,7 @@ void	Server::lnch(void)
 	int status;
 	if ((status = getaddrinfo(NULL, port.c_str(), &hints, &servinfo)) != 0) {
 		std::cerr << "Error: getaddrinfo: " << gai_strerror(status);
-		exit(1);
+		std::exit(1);
 	}
 	for (p = servinfo; p != NULL; p = p->ai_next) {
 		if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
@@ -76,12 +78,12 @@ void	Server::lnch(void)
 		}
 		if (fcntl(sockfd, F_SETFL, O_NONBLOCK) == -1) {
 			std::cerr << "Error: fcntl" << std::endl;
-			exit(1) ;
+			std::exit(1) ;
 		}
 		int okay = 1;
 		if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &okay, sizeof(int)) == -1) {
 			std::cerr << "Error: setsockopt" << std::endl;
-			exit(1);
+			std::exit(1);
 		}
 		if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
 			close(sockfd);
@@ -94,11 +96,11 @@ void	Server::lnch(void)
 	freeaddrinfo(servinfo);
 	if (!p) {
 		std::cerr << "Error: Could not find a binding" << std::endl;
-		exit(1);
+		std::exit(1);
 	}
 	if (listen(sockfd, BACKLOG) == -1) {
 		std::cerr << "Error: could not start listening" << std::endl;
-		exit(1);
+		std::exit(1);
 	}
 	std::cout << "Server launched" << std::endl;
 }
@@ -119,7 +121,7 @@ void	Server::run(void)
 		int poll_count = poll((pollfd *)&pollfds[0], (unsigned int) pollfds.size(), -1);
 		if (poll_count == -1) {
 			std::cerr << "Error: poll" << std::endl;
-			exit(1);
+			std::exit(1);
 		}
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
@@ -167,10 +169,10 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
-	int	received = recv(pfd.fd, clients.at(pfd.fd).getBuff(), BUFF_SIZE, 0);
+	int	received = recv(pfd.fd, clients.at(pfd.fd).getReadBuff(), BUFF_SIZE, 0);
 	if (received > 0) //GOOD data
 	{
-		std::cout << clients.at(pfd.fd).getBuff(); //TODO store result, treat it, broadcast
+		std::cout << clients.at(pfd.fd).getReadBuff(); //TODO store result, treat it, broadcast
 	}
 	else
 	{

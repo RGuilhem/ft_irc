@@ -2,7 +2,10 @@ CC = c++
 FLAGS = -Wall -Wextra -Werror -g3 -std=c++98
 RM = rm -rf
 
-SRC = Channel.cpp \
+SRC = main.cpp			\
+	  Server.cpp		\
+	  Channel.cpp		\
+	  Client.cpp
 #SRC_DIR = $(addprefix src/, $(SRC))
 OBJ = ${SRC:.cpp=.o}
 
