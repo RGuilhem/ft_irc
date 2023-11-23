@@ -6,7 +6,7 @@
 /*   By: ppotier <ppotier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:44:06 by ppotier           #+#    #+#             */
-/*   Updated: 2023/11/23 14:03:31 by ppotier          ###   ########.fr       */
+/*   Updated: 2023/11/23 14:18:31 by ppotier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 #include <string>
 #include <iostream>
 
-Channel::Channel(std::string const &channelName) : name(channelName)
+Channel::Channel(std::string const &channelName, Client const &client) : name(channelName)
 {
 	topic.clear();
 	channelpassword.clear();
 	user_limit = -1;
 	invite_only = false;
 	topic_operator = true;
+	operators.push_back(client);
 }
 
 /*GETERS*/

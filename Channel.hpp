@@ -23,8 +23,8 @@ class Channel
   public:
 	/*GETERS*/
     Channel(void);
-	Channel(std::string const &channelName);
-	std::string const &		getTopic() const;
+	Channel(std::string const &channelName, Client const &client);
+	std::string const&		getTopic() const;
 	std::string const&		getname() const;
 	std::string const&		getchannelpassword() const;
 	int						getuserlimit();
