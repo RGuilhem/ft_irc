@@ -33,3 +33,4 @@ ircserv
 *.out
 *.app
 
+.vscode

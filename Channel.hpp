@@ -8,18 +8,28 @@
 class Channel
 {
   private:
-    std::string         name;
-    std::string         topic;
-    std::list<Client>   users;
-    std::list<Client>   operators;
+    std::string         name; //done;
+    std::string         topic; //done;
+    std::list<Client>   users; //done ??;
+    std::list<Client>   operators; //todo;
+    std::string         channelpassword; //done;
 
-    bool                invite_only;
-    bool                topic_operator;
-    std::string         password;
-    int                 user_limit;
-
-    Channel(void);
+    bool                invite_only; //done;
+    bool                topic_operator; //done;
+    int                 user_limit; //done;
+ 	
+	// ~Channel(); Destructeur ??
+	// canonical form;
   public:
+	/*GETERS*/
+    Channel(void);
+	Channel(std::string const &channelName);
+	std::string const &		getTopic() const;
+	std::string const&		getname() const;
+	std::string const&		getchannelpassword() const;
+	int						getuserlimit();
+	bool 					getinviteonly();
+	bool 					gettopicoperator();
 };
 
 #endif
