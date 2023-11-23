@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 16:41:47 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:03:58 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	Client::clearEndReadBuff(void)
 
 void	Client::clearSentSendBuff(int sent)
 {
-	if (static_cast<unsigned int>(sent) == send_buff.size())
+	if (sent != 0 && static_cast<unsigned int>(sent) == send_buff.size())
 		send_buff.clear();
 	else
 		send_buff.erase(0, sent);

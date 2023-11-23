@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 16:48:11 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:09:22 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,11 +168,13 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 void	Server::parseMessage(Client &client)
 {
 	std::string	message = client.getReadBuff();
-	if (message.find("\r\n") != std::string::npos)
+	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
+		std::cout << "Valid message received" << std::endl;
 		client.clearEndReadBuff(); // TODO check if empty
 		std::cout << client.getReadBuff() << std::endl;
 		client.resetReadBuff();
+		client.appendSend("ACK");
 		//TODO temporary
 	}
 }
@@ -205,7 +207,7 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	(void) pollfds;
-	Client		client = clients.at(pfd.fd);
+	Client		&client = clients.at(pfd.fd);
 	std::string	message;
 	int			sent;
 
