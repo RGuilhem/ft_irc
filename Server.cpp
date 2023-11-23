@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:42:25 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:43:28 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,13 @@ void	Server::run(void)
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
 			pollfd	curr_poll = pollfds[i];
-			if (curr_poll.revents & POLLIN)
-			{
+			if (curr_poll.revents & POLLIN) {
 				if (curr_poll.fd == sockfd)
 					this->newConnection(pollfds);
 				else
 					this->recvClient(pollfds, curr_poll);
 			}
-			else if (curr_poll.revents & POLLOUT)
-			{
+			else if (curr_poll.revents & POLLOUT) {
 				if (curr_poll.fd != sockfd)
 					this->sendClient(pollfds, curr_poll);
 			}
