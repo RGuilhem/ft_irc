@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 16:01:38 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 16:38:08 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ class Client
 		Client(int fd);
 
 		void		appendRead(std::string newData);
+		void		appendSend(std::string newData);
 		void		resetReadBuff(void);
 		void		clearEndReadBuff(void);
+		void		clearSentSendBuff(int sent);
 
         std::string getReadBuff(void) const;
         std::string getSendBuff(void) const;
