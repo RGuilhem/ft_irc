@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 11:36:59 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 11:49:13 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ class Client
 	public:
 		Client(int fd);
 
-		char	*getReadBuff(void);
-		char	*getSendBuff(void);
+		char	    *getReadBuffRaw(void);
+		char	    *getSendBuffRaw(void);
+        std::string getReadBuff(void) const;
+        std::string getSendBuff(void) const;
 };
 
 #endif
