@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:11:28 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:27:48 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,12 +170,11 @@ void	Server::parseMessage(Client &client)
 	std::string	message = client.getReadBuff();
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
-		std::cout << "Valid message received" << std::endl;
 		client.clearEndReadBuff(); // TODO check if empty
 		std::cout << client.getReadBuff() << std::endl;
 		client.resetReadBuff();
-		client.appendSend("ACK");
 		//TODO temporary
+		client.appendSend("ACK");
 	}
 }
 
@@ -184,14 +183,14 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
 	char	buff[BUFF_SIZE] = "";
 	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
-	if (received > 0) //GOOD data
+	if (received > 0)
 	{
 		clients.at(pfd.fd).appendRead(buff);
 		parseMessage(clients.at(pfd.fd));
 	}
 	else
 	{
-		std::cerr  << "Client disconected from fd: " << pfd.fd << std::endl;
+		std::cerr  << "Client disconnected from fd: " << pfd.fd << std::endl;
 		close(pfd.fd);
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
