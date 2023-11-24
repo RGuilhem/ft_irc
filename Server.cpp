@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/22 23:15:46 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:43:28 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void	Server::lnch(void)
 
 void	Server::run(void)
 {
-	//TODO implement
 	std::cout << "Server running..." << std::endl;
 
 	std::vector<pollfd> pollfds;
@@ -121,25 +120,21 @@ void	Server::run(void)
 		int poll_count = poll((pollfd *)&pollfds[0], (unsigned int) pollfds.size(), -1);
 		if (poll_count == -1) {
 			std::cerr << "Error: poll" << std::endl;
-			std::exit(1);
+			std::exit(EXIT_FAILURE);
 		}
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
-			if (pollfds[i].revents & POLLIN)
-			{
-				if (pollfds[i].fd == sockfd)
+			pollfd	curr_poll = pollfds[i];
+			if (curr_poll.revents & POLLIN) {
+				if (curr_poll.fd == sockfd)
 					this->newConnection(pollfds);
 				else
-					this->recvClient(pollfds, pollfds[i]);
+					this->recvClient(pollfds, curr_poll);
 			}
-			/*
-			else if (pollfds[i].revents & POLLOUT)
-			{
-				if (pollfds[i].fd == sockfd)
-					std::cout << "POLLOUT on sockfd" << std::endl;
-				else
-					this->sendClient(pollfds, pollfds[i]);
-			}*/
+			else if (curr_poll.revents & POLLOUT) {
+				if (curr_poll.fd != sockfd)
+					this->sendClient(pollfds, curr_poll);
+			}
 		}
 	}
 	std::cout << "Server stopped" << std::endl;
@@ -154,7 +149,7 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 	{
 		pollfd	new_node;
 		new_node.fd = confd;
-		new_node.events = POLLIN; //TODO add possiblity to add pollout
+		new_node.events = POLLIN | POLLOUT;
 		pollfds.push_back(new_node);
 		std::cout << "Run: new connection on fd: " << confd << std::endl;
 		clients.insert(std::pair<int, Client>(confd, Client(confd)));
@@ -166,17 +161,32 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 	}
 }
 
+void	Server::parseMessage(Client &client)
+{
+	std::string	message = client.getReadBuff();
+	if (message.find("\r\n") != std::string::npos && message.size() != 2)
+	{
+		client.clearEndReadBuff(); // TODO check if empty
+		std::cout << client.getReadBuff() << std::endl;
+		client.resetReadBuff();
+		//TODO temporary
+		client.appendSend("ACK");
+	}
+}
+
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
-	int	received = recv(pfd.fd, clients.at(pfd.fd).getReadBuff(), BUFF_SIZE, 0);
-	if (received > 0) //GOOD data
+	char	buff[BUFF_SIZE] = "";
+	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
+	if (received > 0)
 	{
-		std::cout << clients.at(pfd.fd).getReadBuff(); //TODO store result, treat it, broadcast
+		clients.at(pfd.fd).appendRead(buff);
+		parseMessage(clients.at(pfd.fd));
 	}
 	else
 	{
-		std::cerr  << "Client disconected from fd: " << pfd.fd << std::endl;
+		std::cerr  << "Client disconnected from fd: " << pfd.fd << std::endl;
 		close(pfd.fd);
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
@@ -192,8 +202,15 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	(void) pollfds;
-	(void) pfd;
-	std::cout << "Sending data on fd: " << pfd.fd << std::endl;
+	Client		&client = clients.at(pfd.fd);
+	std::string	message;
+	int			sent;
+
+	message = client.getSendBuff();
+	if (message.empty())
+		return ;
+	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
+	client.clearSentSendBuff(sent);
 }
 
 std::string	Server::getPort(void) const

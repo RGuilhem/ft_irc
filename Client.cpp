@@ -6,23 +6,54 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/22 23:14:56 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/23 17:03:58 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Client.hpp"
+#include <iostream>
 
 Client::Client(int i) : fd(i)
 {
-	fd = i;
+	(void) fd;
 }
 
-char	*Client::getReadBuff(void)
+void	Client::appendRead(std::string newData)
 {
-	return (read_buff);
+	read_buff += newData;
 }
 
-char	*Client::getSendBuff(void)
+void	Client::appendSend(std::string newData)
 {
-	return (send_buff);
+	send_buff += newData;
+	send_buff += "\r\n";
+}
+
+void	Client::resetReadBuff(void)
+{
+	read_buff.clear();
+}
+
+void	Client::clearEndReadBuff(void)
+{
+	read_buff.pop_back();
+	read_buff.pop_back();
+}
+
+void	Client::clearSentSendBuff(int sent)
+{
+	if (sent != 0 && static_cast<unsigned int>(sent) == send_buff.size())
+		send_buff.clear();
+	else
+		send_buff.erase(0, sent);
+}
+
+std::string Client::getReadBuff(void) const
+{
+  return (read_buff);
+}
+
+std::string Client::getSendBuff(void) const
+{
+  return (send_buff);
 }
