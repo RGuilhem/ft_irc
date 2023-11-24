@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 15:31:02 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:05:22 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,15 @@ class Server
 		static CommMap	init_commands_map(void);
 		std::string		password;
 		std::string		port;
-		std::map<int, Client> clients;
 		int				iport;
 		int				sockfd;
 		void			newConnection(std::vector<pollfd> &pollfds);
 		void			recvClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 		void			sendClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 		void			parseMessage(Client &client);
+
+		std::map<int, Client>		clients;
+		std::vector<std::string>	nicknames;
 	public:
 		Server(void);
 		~Server(void);
@@ -60,6 +62,7 @@ class Server
 		//Server commands
 		static bool	isCommand(std::string comm);
 		void	pass(Client &client, Command &command);
+		void	nick(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);

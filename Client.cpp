@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 16:41:20 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:16:35 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ Client::Client(int i) : fd(i)
 {
 	(void) fd;
 	is_registered = false;
+}
+
+Client::~Client(void)
+{
+	//TODO deregister nickname from server nicknames
 }
 
 void	Client::appendRead(std::string newData)
@@ -82,4 +87,14 @@ bool	Client::getRegistered(void) const
 void	Client::setRegistered(bool val)
 {
 	is_registered = val;
+}
+
+std::string	Client::getNickname(void) const
+{
+	return (nickname);
+}
+
+void	Client::setNickname(std::string const &val)
+{
+	nickname = val;
 }

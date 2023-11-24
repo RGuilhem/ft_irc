@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 16:41:04 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:15:51 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Client
         std::string	send_buff;
 	public:
 		Client(int fd);
+		~Client();
 
 		void		appendRead(std::string newData);
 		void		appendSend(std::string newData);
@@ -43,6 +44,8 @@ class Client
 		bool		getRegistered(void) const;
 		void		setRegistered(bool val);
 		std::string	getId(void) const;
+		std::string	getNickname(void) const;
+		void		setNickname(std::string const &val);
 };
 
 #endif
