@@ -1,6 +1,6 @@
-:localhost !@ :Password incorrect
-:localhost guigui!~graux@ :Welcome to ircserv, guigui!~graux@
-:localhost guigui!~graux@ :Your host is ircserv, running version 0.1
-:localhost guigui!~graux@ :This server was created placeholder date
-:localhost guigui!~graux@ ircserv v0.1 <user modes> <channel modes>
-:localhost guigui!~graux@ NICKLEN=9 :are supproted by this server
+:localhost  :Password incorrect
+:localhost guigui :Welcome to ircserv, guigui!~graux@
+:localhost guigui :Your host is ircserv, running version 0.1
+:localhost guigui :This server was created placeholder date
+:localhost guigui ircserv v0.1 <user modes> <channel modes>
+:localhost guigui NICKLEN=9 :are supproted by this server

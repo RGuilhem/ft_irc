@@ -28,12 +28,12 @@ void	Server::pass(Client &client, Command &command)
 
 	if (client.getRegistered() == true)
 	{
-		client.appendSend(ERR_ALREADYREGISTERED(client.getId()));
+		client.appendSend(ERR_ALREADYREGISTERED(client.getNickname()));
 		return ;
 	}
 	if (args.size() < 1)
 	{
-		client.appendSend(ERR_NEEDMOREPARAMS(client.getId(), comm));
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
 	}
 	if (args[0] == password)
@@ -41,7 +41,7 @@ void	Server::pass(Client &client, Command &command)
 	else
 	{
 		client.setCorrectPass(false);
-		client.appendSend(ERR_PASSWDMISMATCH(client.getId()));
+		client.appendSend(ERR_PASSWDMISMATCH(client.getNickname()));
 	}
 }
 
@@ -52,17 +52,17 @@ void	Server::nick(Client &client, Command &command)
 
 	if (args.size() < 1)
 	{
-		client.appendSend(ERR_NONICKNAMEGIVEN(client.getId()));
+		client.appendSend(ERR_NONICKNAMEGIVEN(client.getNickname()));
 		return ;
 	}
 	if (std::find(nicknames.begin(), nicknames.end(), args[0]) != nicknames.end())
 	{
-		client.appendSend(ERR_NICKNAMEINUSE(client.getId(), args[0]));
+		client.appendSend(ERR_NICKNAMEINUSE(client.getNickname(), args[0]));
 		return ;
 	}
 	if (args[0].find_first_of(":# ") != std::string::npos || args[0].size() == 0)
 	{
-		client.appendSend(ERR_ERRONEUSNICKNAME(client.getId(), args[0]));
+		client.appendSend(ERR_ERRONEUSNICKNAME(client.getNickname(), args[0]));
 		return ;
 	}
 	std::string	curr_nick = client.getNickname();
@@ -80,12 +80,12 @@ void	Server::user(Client &client, Command &command)
 	
 	if (client.getRegistered() == true)
 	{
-		client.appendSend(ERR_ALREADYREGISTERED(client.getId()));
+		client.appendSend(ERR_ALREADYREGISTERED(client.getNickname()));
 		return ;
 	}
 	if (args.size() != 4 || args[0].size() == 0 || args[1] != "0" || args[2] != "*")
 	{
-		client.appendSend(ERR_NEEDMOREPARAMS(client.getId(), comm));
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
 	}
 	client.setUsername("~" + args[0]);
@@ -93,10 +93,10 @@ void	Server::user(Client &client, Command &command)
 	client.checkRegistration();
 	if (client.getRegistered())
 	{
-		client.appendSend(RPL_WELCOME(client.getId()));
-		client.appendSend(RPL_YOURHOST(client.getId()));
-		client.appendSend(RPL_CREATED(client.getId(), "placeholder date"));
-		client.appendSend(RPL_MYINFO(client.getId()));
-		client.appendSend(RPL_ISUPPORT(client.getId()));
+		client.appendSend(RPL_WELCOME(client.getNickname(), client.getId()));
+		client.appendSend(RPL_YOURHOST(client.getNickname()));
+		client.appendSend(RPL_CREATED(client.getNickname(), "placeholder date"));
+		client.appendSend(RPL_MYINFO(client.getNickname()));
+		client.appendSend(RPL_ISUPPORT(client.getNickname()));
 	}
 }
