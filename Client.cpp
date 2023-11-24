@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 17:16:35 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:53:40 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void	Client::clearSentSendBuff(int sent)
 		send_buff.erase(0, sent);
 }
 
+void	Client::checkRegistration(void)
+{
+	if (correct_pass && !nickname.empty() && !username.empty())
+		is_registered = true;
+}
+
 std::string Client::getReadBuff(void) const
 {
   return (read_buff);
@@ -97,4 +103,24 @@ std::string	Client::getNickname(void) const
 void	Client::setNickname(std::string const &val)
 {
 	nickname = val;
+}
+
+std::string	Client::getUsername(void) const
+{
+	return (username);
+}
+
+void	Client::setUsername(std::string const &val)
+{
+	username = val;
+}
+
+std::string	Client::getRealname(void) const
+{
+	return (realname);
+}
+
+void	Client::setRealname(std::string const &val)
+{
+	realname = val;
 }

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 17:20:14 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 17:51:19 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ class Client
 		std::string	getId(void) const;
 		std::string	getNickname(void) const;
 		void		setNickname(std::string const &val);
+		std::string	getUsername(void) const;
+		void		setUsername(std::string const &val);
+		std::string	getRealname(void) const;
+		void		setRealname(std::string const &val);
 };
 
 #endif

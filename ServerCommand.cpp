@@ -9,6 +9,7 @@ Server::CommMap	Server::init_commands_map(void)
 
 	comms.insert(std::make_pair(std::string("PASS"), &Server::pass));
 	comms.insert(std::make_pair(std::string("NICK"), &Server::nick));
+	comms.insert(std::make_pair(std::string("USER"), &Server::user));
 	return (comms);
 }
 
@@ -69,4 +70,33 @@ void	Server::nick(Client &client, Command &command)
 	nicknames.push_back(args[0]);
 	if (curr_nick.size() != 0)
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
+	//TODO send message on nickname change
+}
+
+void	Server::user(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+	
+	if (client.getRegistered() == true)
+	{
+		client.appendSend(ERR_ALREADYREGISTERED(client.getId()));
+		return ;
+	}
+	if (args.size() != 4 || args[0].size() == 0 || args[1] != "0" || args[2] != "*")
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getId(), comm));
+		return ;
+	}
+	client.setUsername("~" + args[0]);
+	client.setRealname(args[3]);
+	client.checkRegistration();
+	if (client.getRegistered())
+	{
+		client.appendSend(RPL_WELCOME(client.getId()));
+		client.appendSend(RPL_YOURHOST(client.getId()));
+		client.appendSend(RPL_CREATED(client.getId(), "placeholder date"));
+		client.appendSend(RPL_MYINFO(client.getId()));
+		client.appendSend(RPL_ISUPPORT(client.getId()));
+	}
 }

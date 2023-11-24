@@ -1,4 +1,4 @@
 PASS wrong
 PASS test_pass
-NICK jonny
-USER guest 0 * john
+NICK guigui
+USER graux 0 * :Guilhem Raux
