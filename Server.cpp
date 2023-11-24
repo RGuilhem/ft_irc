@@ -6,11 +6,12 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:43:28 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 15:31:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Command.hpp"
 #include <iostream>
 #include <vector>
 #include <unistd.h>
@@ -18,6 +19,8 @@
 #include <poll.h>
 #include <string>
 #include <cstdlib>
+
+Server::CommMap Server::commands_map = Server::init_commands_map();
 
 Server::Server(void) //TODO Think about init values
 {
@@ -166,11 +169,16 @@ void	Server::parseMessage(Client &client)
 	std::string	message = client.getReadBuff();
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
-		client.clearEndReadBuff(); // TODO check if empty
+		client.clearEndReadBuff();
 		std::cout << client.getReadBuff() << std::endl;
+		try {
+			Command command(client.getReadBuff());
+			Exec_func	func = commands_map[command.getCommand()];
+			(this->*func)(client, command);
+		} catch (std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
 		client.resetReadBuff();
-		//TODO temporary
-		client.appendSend("ACK");
 	}
 }
 
