@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 14:06:57 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 14:22:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <poll.h>
 #include <string>
 #include <cstdlib>
+
+Server::CommMap Server::commands_map = Server::init_commands_map();
 
 Server::Server(void) //TODO Think about init values
 {
