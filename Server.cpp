@@ -6,11 +6,12 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:43:28 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 14:06:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Command.hpp"
 #include <iostream>
 #include <vector>
 #include <unistd.h>
@@ -168,9 +169,12 @@ void	Server::parseMessage(Client &client)
 	{
 		client.clearEndReadBuff(); // TODO check if empty
 		std::cout << client.getReadBuff() << std::endl;
+		try {
+			Command	client_comm(client.getReadBuff());
+		} catch (std::exception &e) {
+			std::cerr << "Unkown command" << std::endl;
+		}
 		client.resetReadBuff();
-		//TODO temporary
-		client.appendSend("ACK");
 	}
 }
 
