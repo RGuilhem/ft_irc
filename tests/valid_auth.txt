@@ -1,0 +1,4 @@
+PASS wrong
+PASS test_pass
+NICK jonny
+USER guest 0 * john

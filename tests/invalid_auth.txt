@@ -1,0 +1,4 @@
+PASS test_pass
+PASS wrong_pass
+NICK invalid_pass
+USER guest 0 * bob
