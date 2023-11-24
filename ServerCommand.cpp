@@ -11,6 +11,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("NICK"), &Server::nick));
 	comms.insert(std::make_pair(std::string("USER"), &Server::user));
 	comms.insert(std::make_pair(std::string("CAP"), &Server::cap));
+	comms.insert(std::make_pair(std::string("PING"), &Server::ping));
 	return (comms);
 }
 
@@ -113,4 +114,11 @@ void	Server::cap(Client &client, Command &command)
 	std::vector<std::string> args = command.getArgs();
     if (args.size() > 0 && args[0] != "END")
       client.appendSend(":localhost CAP * LS");
+}
+
+void	Server::ping(Client &client, Command &command)
+{
+	std::vector<std::string> args = command.getArgs();
+    if (args.size() != 0)
+        client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
 }

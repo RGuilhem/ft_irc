@@ -5,3 +5,5 @@ NICK guigui
 CAP END
 USER graux 0 * :Guilhem Raux
 NICK tiguidou
+PING token_test
+PING other ping with spaces
