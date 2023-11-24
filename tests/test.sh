@@ -10,5 +10,5 @@ sleep 1
 cat ./tests/valid_auth.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
 sleep 5
 cat ./tests/valid_auth.log
-kill -SIGKILL $pid
+kill -SIGINT $pid
 #todo kill process juste au cas ou...

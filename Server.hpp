@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 18:40:36 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 19:04:10 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <arpa/inet.h>
 # include <map>
 # include <vector>
+# include <fstream>
 
 # define BACKLOG 10
 # define BUFF_SIZE 512
@@ -45,9 +46,11 @@ class Server
 		void			recvClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 		void			sendClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 		void			parseMessage(Client &client);
+		std::ofstream	logfile;
 
 		std::map<int, Client>		clients;
 		std::vector<std::string>	nicknames;
+		void	logmsg(std::string msg);
 	public:
 		Server(void);
 		~Server(void);

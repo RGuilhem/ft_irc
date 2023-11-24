@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:42:49 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:48:59 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 19:17:21 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ int	main(int argc, char *argv[])
 		signal(SIGINT, signal_handler);
 		Server	serv(argv[1], argv[2]);
 		serv.lnch();
-		serv.run();
+		try {
+			serv.run();
+		} catch (std::exception &e) {
+			std::cout << "Server shutdown" << std::endl;
+		}
 	}
 	else
 	{

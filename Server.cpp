@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 15:31:57 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 19:16:13 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ Server::CommMap Server::commands_map = Server::init_commands_map();
 
 Server::Server(void) //TODO Think about init values
 {
+	logfile.open("serv.log");
+	if (!logfile.is_open())
+		std::cerr << "Could not open log file" << std::endl;
 }
 
 Server::~Server(void)
@@ -31,6 +34,7 @@ Server::~Server(void)
 	//TODO
 	std::cerr << "Exiting server" << std::endl;
 	close(sockfd);
+	logfile.close();
 }
 
 Server::Server(Server const &s)
@@ -45,6 +49,17 @@ Server &Server::operator=(Server const &s)
 	password = s.password;
 	port = s.port;
 	return (*this);
+}
+
+void	Server::logmsg(std::string msg)
+{
+	if (msg.find("\r\n") != std::string::npos)
+	{
+		msg.pop_back();
+		msg.pop_back();
+	}
+	std::cout << "logging" << std::endl;
+	logfile << msg << std::endl;
 }
 
 Server::Server(std::string port_str, std::string pass) : password(pass), port(port_str)
@@ -122,8 +137,7 @@ void	Server::run(void)
 	{
 		int poll_count = poll((pollfd *)&pollfds[0], (unsigned int) pollfds.size(), -1);
 		if (poll_count == -1) {
-			std::cerr << "Error: poll" << std::endl;
-			std::exit(EXIT_FAILURE);
+			throw std::exception();
 		}
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
@@ -171,6 +185,7 @@ void	Server::parseMessage(Client &client)
 	{
 		client.clearEndReadBuff();
 		std::cout << client.getReadBuff() << std::endl;
+		logmsg(client.getReadBuff());
 		try {
 			Command command(client.getReadBuff());
 			Exec_func	func = commands_map[command.getCommand()];
@@ -217,6 +232,7 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	message = client.getSendBuff();
 	if (message.empty())
 		return ;
+	logmsg(message);
 	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
 	client.clearSentSendBuff(sent);
 }
