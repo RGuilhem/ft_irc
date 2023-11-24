@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 14:22:57 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 15:31:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,14 @@ void	Server::parseMessage(Client &client)
 	std::string	message = client.getReadBuff();
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
-		client.clearEndReadBuff(); // TODO check if empty
+		client.clearEndReadBuff();
 		std::cout << client.getReadBuff() << std::endl;
 		try {
-			Command	client_comm(client.getReadBuff());
+			Command command(client.getReadBuff());
+			Exec_func	func = commands_map[command.getCommand()];
+			(this->*func)(client, command);
 		} catch (std::exception &e) {
-			std::cerr << "Unkown command" << std::endl;
+			std::cerr << e.what() << std::endl;
 		}
 		client.resetReadBuff();
 	}

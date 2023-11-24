@@ -14,5 +14,16 @@ Command::Command(std::string input)
 	i_stream >> command;
 	while (i_stream >> token)
 		args.push_back(token);
-	//TODO validate commmand
+	if (!Server::isCommand(command))
+		throw std::invalid_argument("Invalid command Exception");
+}
+
+std::string	Command::getCommand(void) const
+{
+	return (command);
+}
+
+std::vector<std::string>	Command::getArgs(void) const
+{
+	return (args);
 }

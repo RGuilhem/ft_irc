@@ -14,6 +14,8 @@ class Command
 	public:
 		~Command(void);
 		Command(std::string input); //clients can't send source so not in here
+		std::string	getCommand(void) const;
+		std::vector<std::string>	getArgs(void) const;
 };
 
 #endif
