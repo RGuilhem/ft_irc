@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 19:16:13 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 19:23:00 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ Server::CommMap Server::commands_map = Server::init_commands_map();
 
 Server::Server(void) //TODO Think about init values
 {
-	logfile.open("serv.log");
-	if (!logfile.is_open())
-		std::cerr << "Could not open log file" << std::endl;
 }
 
 Server::~Server(void)
@@ -58,12 +55,14 @@ void	Server::logmsg(std::string msg)
 		msg.pop_back();
 		msg.pop_back();
 	}
-	std::cout << "logging" << std::endl;
 	logfile << msg << std::endl;
 }
 
 Server::Server(std::string port_str, std::string pass) : password(pass), port(port_str)
 {
+	logfile.open("serv.log");
+	if (!logfile.is_open())
+		std::cerr << "Could not open log file" << std::endl;
 	try {
 		iport = std::atoi(port_str.c_str());
 		if (iport < 1 || iport > 65535)

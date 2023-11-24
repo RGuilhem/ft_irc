@@ -5,10 +5,10 @@
 
 - [x] handling of multiple clients
 - [ ] hostname and ip info for clients
-- [ ] Logging capability
+- [x] Logging capability
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
-- [ ] Server replies
+- [x] Server replies
 
 ### Channel
 
