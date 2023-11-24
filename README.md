@@ -24,3 +24,7 @@
 
 - [ ] file transfer
 - [ ] bot
+
+## Ressources
+
+https://modern.ircdocs.horse/
