@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 16:38:08 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 15:49:25 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class Client
 {
 	private:
         std::string nick;
-        std::string name;
+        std::string realname;
 		int		    fd;
         std::string	read_buff;
         std::string	send_buff;

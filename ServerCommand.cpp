@@ -20,6 +20,11 @@ bool	Server::isCommand(std::string comm)
 void	Server::pass(Client &client, Command &command)
 {
 	(void) client;
-	(void) command;
-	std::cout << "executing pass command" << std::endl;
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+	std::cout << "executing pass command '" << comm << "'" << std::endl;
+	for (unsigned int i = 0; i < args.size(); i++)
+	{
+		std::cout << "'" << args[i] << "'" << std::endl;
+	}
 }
