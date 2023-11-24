@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 20:24:21 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 21:08:49 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Client::Client(int i) : fd(i)
 {
 	(void) fd;
 	is_registered = false;
+    hostname = "127.0.0.1";
 }
 
 Client::~Client(void)

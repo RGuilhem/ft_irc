@@ -84,7 +84,7 @@ void	Server::user(Client &client, Command &command)
 		client.appendSend(ERR_ALREADYREGISTERED(client.getNickname()));
 		return ;
 	}
-	if (args.size() != 4 || args[0].size() == 0 || args[1] != "0" || args[2] != "*")
+	if (args.size() != 4 || args[0].size() == 0)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
