@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/23 17:03:58 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 16:41:20 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 Client::Client(int i) : fd(i)
 {
 	(void) fd;
+	is_registered = false;
 }
 
 void	Client::appendRead(std::string newData)
@@ -56,4 +57,29 @@ std::string Client::getReadBuff(void) const
 std::string Client::getSendBuff(void) const
 {
   return (send_buff);
+}
+
+std::string	Client::getId(void) const
+{
+	return (nickname + "!" + username + "@" + hostname);
+}
+
+bool	Client::getCorrectPass(void) const
+{
+	return (correct_pass);
+}
+
+void	Client::setCorrectPass(bool val)
+{
+	correct_pass = val;
+}
+
+bool	Client::getRegistered(void) const
+{
+	return (is_registered);
+}
+
+void	Client::setRegistered(bool val)
+{
+	is_registered = val;
 }

@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Replies.hpp"
 #include <iostream>
 
 Server::CommMap	Server::init_commands_map(void)
@@ -19,12 +20,23 @@ bool	Server::isCommand(std::string comm)
 
 void	Server::pass(Client &client, Command &command)
 {
-	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
-	std::cout << "executing pass command '" << comm << "'" << std::endl;
-	for (unsigned int i = 0; i < args.size(); i++)
+	if (client.getRegistered() == true)
 	{
-		std::cout << "'" << args[i] << "'" << std::endl;
+		client.appendSend(ERR_ALREADYREGISTERED(client.getId()));
+		return ;
+	}
+	if (args.size() < 1)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getId(), comm));
+		return ;
+	}
+	if (args[0] == password)
+		client.setCorrectPass(true);
+	else
+	{
+		client.setCorrectPass(false);
+		client.appendSend(ERR_PASSWDMISMATCH(client.getId()));
 	}
 }

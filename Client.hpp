@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 15:49:25 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 16:41:04 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@
 class Client
 {
 	private:
-        std::string nick;
+		bool		correct_pass;
+		bool		is_registered;
+        std::string nickname;
+		std::string	username;
         std::string realname;
+		std::string	hostname;
 		int		    fd;
         std::string	read_buff;
         std::string	send_buff;
@@ -34,6 +38,11 @@ class Client
 
         std::string getReadBuff(void) const;
         std::string getSendBuff(void) const;
+		bool		getCorrectPass(void) const;
+		void		setCorrectPass(bool val);
+		bool		getRegistered(void) const;
+		void		setRegistered(bool val);
+		std::string	getId(void) const;
 };
 
 #endif
