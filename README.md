@@ -8,6 +8,7 @@
 - [x] Logging capability
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
+- [ ] QUIT
 - [x] Server replies
 
 ### Channel

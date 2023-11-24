@@ -1,4 +1,6 @@
 PASS wrong
 PASS test_pass
+CAP * LS
 NICK guigui
+CAP END
 USER graux 0 * :Guilhem Raux

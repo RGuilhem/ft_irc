@@ -108,6 +108,7 @@ void	Server::user(Client &client, Command &command)
 
 void	Server::cap(Client &client, Command &command)
 {
-	(void) command;
-	client.appendSend(":localhost CAP * LS");
+	std::vector<std::string> args = command.getArgs();
+    if (args.size() > 0 && args[0] != "END")
+      client.appendSend(":localhost CAP * LS");
 }
