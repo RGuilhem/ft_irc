@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 17:53:40 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 20:24:21 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ void	Client::resetReadBuff(void)
 
 void	Client::clearEndReadBuff(void)
 {
-	read_buff.pop_back();
-	read_buff.pop_back();
+	read_buff.erase(read_buff.size() - 2, 2);
 }
 
 void	Client::clearSentSendBuff(int sent)

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 19:23:00 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/24 20:23:31 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ void	Server::logmsg(std::string msg)
 {
 	if (msg.find("\r\n") != std::string::npos)
 	{
-		msg.pop_back();
-		msg.pop_back();
+      msg.erase(msg.size() - 2, 2);
 	}
 	logfile << msg << std::endl;
 }

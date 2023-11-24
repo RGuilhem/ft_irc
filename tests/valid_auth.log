@@ -1,9 +1,0 @@
-:localhost  :Password incorrect
-:localhost guigui :Welcome to ircserv, guigui!~graux@
-:localhost guigui :Your host is ircserv, running version 0.1
-:localhost guigui :This server was created placeholder date
-:localhost guigui ircserv v0.1 <user modes> <channel modes>
-:localhost guigui NICKLEN=9 :are supproted by this server
-:localhost guigui :- ircserv Message of the day -
-:localhost guigui :Hello there!
-:localhost guigui :End of /MOTD command
