@@ -70,8 +70,10 @@ void	Server::nick(Client &client, Command &command)
 	client.setNickname(args[0]);
 	nicknames.push_back(args[0]);
 	if (curr_nick.size() != 0)
+    {
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
-	//TODO send message on nickname change
+        client.appendSend(":" + curr_nick + " NICK " + args[0]);
+    }
 }
 
 void	Server::user(Client &client, Command &command)
