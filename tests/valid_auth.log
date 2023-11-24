@@ -4,3 +4,6 @@
 :localhost guigui :This server was created placeholder date
 :localhost guigui ircserv v0.1 <user modes> <channel modes>
 :localhost guigui NICKLEN=9 :are supproted by this server
+:localhost guigui :- ircserv Message of the day -
+:localhost guigui :Hello there!
+:localhost guigui :End of /MOTD command

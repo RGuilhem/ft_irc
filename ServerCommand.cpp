@@ -98,5 +98,9 @@ void	Server::user(Client &client, Command &command)
 		client.appendSend(RPL_CREATED(client.getNickname(), "placeholder date"));
 		client.appendSend(RPL_MYINFO(client.getNickname()));
 		client.appendSend(RPL_ISUPPORT(client.getNickname()));
+
+		client.appendSend(RPL_MOTDSTART(client.getNickname()));
+		client.appendSend(RPL_MOTD(client.getNickname(), "Hello there!"));
+		client.appendSend(RPL_ENDOFMOTD(client.getNickname()));
 	}
 }

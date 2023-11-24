@@ -15,5 +15,9 @@
 # define RPL_CREATED(client, date) (":localhost " + client + " :This server was created " + date)
 # define RPL_MYINFO(client) (":localhost " + client + " ircserv v0.1 <user modes> <channel modes>")
 # define RPL_ISUPPORT(client) (":localhost " + client + " NICKLEN=9 :are supproted by this server")
+//MOTD
+# define RPL_MOTDSTART(client) (":localhost " + client + " :- ircserv Message of the day -")
+# define RPL_MOTD(client, line) (":localhost " + client + " :" + line)
+# define RPL_ENDOFMOTD(client) (":localhost " + client + " :End of /MOTD command")
 
 #endif
