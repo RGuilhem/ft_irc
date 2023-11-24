@@ -10,6 +10,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("PASS"), &Server::pass));
 	comms.insert(std::make_pair(std::string("NICK"), &Server::nick));
 	comms.insert(std::make_pair(std::string("USER"), &Server::user));
+	comms.insert(std::make_pair(std::string("CAP"), &Server::cap));
 	return (comms);
 }
 
@@ -103,4 +104,10 @@ void	Server::user(Client &client, Command &command)
 		client.appendSend(RPL_MOTD(client.getNickname(), "Hello there!"));
 		client.appendSend(RPL_ENDOFMOTD(client.getNickname()));
 	}
+}
+
+void	Server::cap(Client &client, Command &command)
+{
+	(void) command;
+	client.appendSend(":localhost CAP * LS");
 }
