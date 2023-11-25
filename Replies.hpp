@@ -20,4 +20,6 @@
 # define RPL_MOTD(client, line) (":localhost 372 " + client + " :" + line)
 # define RPL_ENDOFMOTD(client) (":localhost 376 " + client + " :End of /MOTD command")
 
+# define ERROR(reason) (":localhost ERROR :" + reason)
+
 #endif

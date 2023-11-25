@@ -12,6 +12,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("USER"), &Server::user));
 	comms.insert(std::make_pair(std::string("CAP"), &Server::cap));
 	comms.insert(std::make_pair(std::string("PING"), &Server::ping));
+	comms.insert(std::make_pair(std::string("QUIT"), &Server::quit));
 	return (comms);
 }
 
@@ -121,4 +122,15 @@ void	Server::ping(Client &client, Command &command)
 	std::vector<std::string> args = command.getArgs();
     if (args.size() != 0)
         client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
+}
+
+void	Server::quit(Client &client, Command &command)
+{
+    //TODO broadcast quit to channels client is quiting
+    std::vector<std::string> args = command.getArgs();
+
+    std::string reason = "";
+    if (args.size() > 0)
+        reason = args[0];
+    client.appendSend(ERROR(reason));
 }
