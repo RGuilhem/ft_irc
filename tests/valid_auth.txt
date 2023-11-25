@@ -8,3 +8,7 @@ NICK tiguidou
 PING token_test
 PING other ping with spaces
 QUIT :going out
+NICK other
+NICK other
+NICK other
+NICK other
