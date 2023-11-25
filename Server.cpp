@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 17:21:43 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:05:36 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,16 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 		}
     }
 	client.clearSentSendBuff(sent);
+}
+
+bool    Server::channelExists(std::string name)
+{
+    for (int i = 0; i < channels.size(); i++)
+    {
+        if (channels[i].getName() == name)
+          return (true);
+    }
+    return (false);
 }
 
 std::string	Server::getPort(void) const

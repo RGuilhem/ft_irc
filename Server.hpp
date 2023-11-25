@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 17:34:10 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:02:00 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class Server
 		std::map<int, Client>		clients;
 		std::vector<std::string>	nicknames;
         std::vector<Channel>        channels;
+        bool    channelExists(std::string name);
 		void	logmsg(std::string msg);
 	public:
 		Server(void);

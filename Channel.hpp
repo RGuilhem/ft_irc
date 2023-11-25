@@ -21,6 +21,8 @@ class Channel
     Channel(void);
   public:
     Channel(std::string const &name, Client &creator);
+
+    std::string getName(void) const;
 };
 
 #endif

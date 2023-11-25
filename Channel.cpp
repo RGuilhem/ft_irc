@@ -10,3 +10,8 @@ Channel::Channel(std::string const &name, Client &creator)
   operators.push_back(creator);
   users.push_back(creator);
 }
+
+std::string Channel::getName(void) const
+{
+    return (name);
+}
