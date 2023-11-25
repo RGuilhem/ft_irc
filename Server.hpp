@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 18:02:00 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:20:29 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class Server
 		std::vector<std::string>	nicknames;
         std::vector<Channel>        channels;
         bool    channelExists(std::string name);
+        Channel    &channelFromName(std::string name);
 		void	logmsg(std::string msg);
 	public:
 		Server(void);
@@ -73,6 +74,7 @@ class Server
 		void	cap(Client &client, Command &command);
 		void	ping(Client &client, Command &command);
 		void	quit(Client &client, Command &command);
+		void	join(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);

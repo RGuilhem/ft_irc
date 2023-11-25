@@ -15,3 +15,10 @@ std::string Channel::getName(void) const
 {
     return (name);
 }
+
+void Channel::join(Client &client, std::string pass)
+{
+  //TODO throw on invalid join
+  (void) pass;
+  users.push_back(client);
+}

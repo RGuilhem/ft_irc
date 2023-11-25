@@ -13,6 +13,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("CAP"), &Server::cap));
 	comms.insert(std::make_pair(std::string("PING"), &Server::ping));
 	comms.insert(std::make_pair(std::string("QUIT"), &Server::quit));
+	comms.insert(std::make_pair(std::string("JOIN"), &Server::join));
 	return (comms);
 }
 
@@ -133,4 +134,30 @@ void	Server::quit(Client &client, Command &command)
     if (args.size() > 0)
         reason = args[0];
     client.appendSend(ERROR(reason));
+}
+
+void	Server::join(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+    std::vector<std::string> args = command.getArgs();
+    if (args.size() == 0)
+    {
+      client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+      return ;
+    }
+    //TODO check channel name mask
+    if (!channelExists(args[0])) //create new channel
+    {
+      Channel   newChannel(args[0], client);
+      channels.push_back(newChannel);
+    }
+    else //try to connect to existing channel
+    {
+      try {
+        channelFromName(args[0]).join(client, ""); //TODO add pw
+        //TODO add server OK response
+      } catch (std::exception &e) {
+        client.appendSend(e.what());
+      }
+    }
 }

@@ -12,6 +12,7 @@ class Channel
     std::string         topic;
     std::list<Client>   users;
     std::list<Client>   operators;
+    std::list<Client>   invited;
 
     bool                invite_only;
     bool                topic_operator;
@@ -23,6 +24,7 @@ class Channel
     Channel(std::string const &name, Client &creator);
 
     std::string getName(void) const;
+    void        join(Client &client, std::string pass);
 };
 
 #endif

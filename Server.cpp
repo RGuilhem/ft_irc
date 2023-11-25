@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 18:05:36 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/25 18:33:30 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,12 +247,22 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 
 bool    Server::channelExists(std::string name)
 {
-    for (int i = 0; i < channels.size(); i++)
+    for (unsigned int i = 0; i < channels.size(); i++)
     {
         if (channels[i].getName() == name)
           return (true);
     }
     return (false);
+}
+
+Channel    &Server::channelFromName(std::string name)
+{
+  for (unsigned int i = 0; i < channels.size(); i++)
+  {
+    if (channels[i].getName() == name)
+      return (channels[i]);
+  }
+  return (channels[0]); //TODO this is sketchy
 }
 
 std::string	Server::getPort(void) const
