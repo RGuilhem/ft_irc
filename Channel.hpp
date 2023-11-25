@@ -20,6 +20,7 @@ class Channel
 
     Channel(void);
   public:
+    Channel(std::string const &name, Client &creator);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 17:03:13 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/25 17:34:10 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SERVER_HPP
 
 # include "Client.hpp"
+# include "Channel.hpp"
 # include "Command.hpp"
 # include <string>
 # include <sys/types.h>
@@ -50,6 +51,7 @@ class Server
 
 		std::map<int, Client>		clients;
 		std::vector<std::string>	nicknames;
+        std::vector<Channel>        channels;
 		void	logmsg(std::string msg);
 	public:
 		Server(void);
