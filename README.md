@@ -9,12 +9,17 @@
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
 - [ ] QUIT
+- [ ] HELP
+- [ ] AWAY ??
 - [x] Server replies
 
 ### Channel
 
 - [ ] message forwarding
 - [ ] operators
+- [ ] JOIN
+- [ ] OPER ??
+- [ ] PART
 - [ ] KICK
 - [ ] INVITE
 - [ ] TOPIC
