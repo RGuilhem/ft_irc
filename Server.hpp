@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 18:20:29 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/26 21:37:01 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ class Server
 		void	ping(Client &client, Command &command);
 		void	quit(Client &client, Command &command);
 		void	join(Client &client, Command &command);
+		void	privmsg(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);

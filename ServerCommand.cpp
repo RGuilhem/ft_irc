@@ -14,6 +14,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("PING"), &Server::ping));
 	comms.insert(std::make_pair(std::string("QUIT"), &Server::quit));
 	comms.insert(std::make_pair(std::string("JOIN"), &Server::join));
+	comms.insert(std::make_pair(std::string("PRIVMSG"), &Server::privmsg));
 	return (comms);
 }
 
@@ -160,4 +161,11 @@ void	Server::join(Client &client, Command &command)
         client.appendSend(e.what());
       }
     }
+}
+
+void	Server::privmsg(Client &client, Command &command)
+{
+    //TODO implement channel privmsg
+	std::string	comm = command.getCommand();
+    std::vector<std::string> args = command.getArgs();
 }
