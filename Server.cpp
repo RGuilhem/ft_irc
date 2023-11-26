@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/25 18:33:30 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/26 21:46:27 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,6 +253,11 @@ bool    Server::channelExists(std::string name)
           return (true);
     }
     return (false);
+}
+
+Client  &Server::clientFromNick(std::string nick)
+{
+  //TODO implement
 }
 
 Channel    &Server::channelFromName(std::string name)
