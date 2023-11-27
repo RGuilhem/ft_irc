@@ -22,3 +22,12 @@ void Channel::join(Client &client, std::string pass)
 	(void) pass;
 	users.push_back(client);
 }
+
+std::vector<std::string> Channel::getUsersNicks(void) const
+{
+	std::vector<std::string>	resp;
+
+	for (unsigned int i = 0; i < users.size(); i++)
+		resp.push_back(users[i].getNickname());
+	return (resp);
+}
