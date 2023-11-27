@@ -6,13 +6,15 @@
 /*   By: ppotier <ppotier@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 10:44:06 by ppotier           #+#    #+#             */
-/*   Updated: 2023/11/23 14:18:31 by ppotier          ###   ########.fr       */
+/*   Updated: 2023/11/27 11:02:53 by ppotier          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 #include <string>
 #include <iostream>
+
+Channel::Channel(void) {}
 
 Channel::Channel(std::string const &channelName, Client const &client) : name(channelName)
 {
