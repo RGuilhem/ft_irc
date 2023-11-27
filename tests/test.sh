@@ -16,6 +16,7 @@ else
 	cat ./tests/valid_auth.txt | slowcat | nc -C localhost 1500 > ./tests/valid_auth.log &
 fi
 sleep 5
+echo '########## serv.log ##########'
 cat serv.log
 kill -SIGINT $pid
 #todo kill process juste au cas ou...
