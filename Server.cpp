@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/26 21:46:27 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 14:22:06 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ Server &Server::operator=(Server const &s)
 void	Server::logmsg(std::string msg)
 {
 	if (msg.find("\r\n") != std::string::npos)
-      msg.erase(msg.size() - 2, 2);
+		msg.erase(msg.size() - 2, 2);
 	logfile << msg << std::endl;
 }
 
@@ -230,9 +230,9 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 		return ;
 	logmsg("Sent: " + message);
 	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
-    if (message.find(":localhost ERROR") != std::string::npos)
-    {
-        close(pfd.fd);
+	if (message.find(":localhost ERROR") != std::string::npos)
+	{
+		close(pfd.fd);
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
 			if (pfd.fd == pollfds[i].fd)
@@ -241,33 +241,35 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 				break ;
 			}
 		}
-    }
+	}
 	client.clearSentSendBuff(sent);
 }
 
 bool    Server::channelExists(std::string name)
 {
-    for (unsigned int i = 0; i < channels.size(); i++)
-    {
-        if (channels[i].getName() == name)
-          return (true);
-    }
-    return (false);
+	for (unsigned int i = 0; i < channels.size(); i++)
+	{
+		if (channels[i].getName() == name)
+			return (true);
+	}
+	return (false);
 }
 
 Client  &Server::clientFromNick(std::string nick)
 {
-  //TODO implement
+	//TODO implement
+	(void) nick;
+	return (clients.at(0));
 }
 
 Channel    &Server::channelFromName(std::string name)
 {
-  for (unsigned int i = 0; i < channels.size(); i++)
-  {
-    if (channels[i].getName() == name)
-      return (channels[i]);
-  }
-  return (channels[0]); //TODO this is sketchy
+	for (unsigned int i = 0; i < channels.size(); i++)
+	{
+		if (channels[i].getName() == name)
+			return (channels[i]);
+	}
+	return (channels[-1]); //TODO this is sketchy
 }
 
 std::string	Server::getPort(void) const

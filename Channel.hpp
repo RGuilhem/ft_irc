@@ -7,24 +7,24 @@
 
 class Channel
 {
-  private:
-    std::string         name;
-    std::string         topic;
-    std::list<Client>   users;
-    std::list<Client>   operators;
-    std::list<Client>   invited;
+	private:
+		std::string         name;
+		std::string         topic;
+		std::list<Client>   users;
+		std::list<Client>   operators;
+		std::list<Client>   invited;
 
-    bool                invite_only;
-    bool                topic_operator;
-    std::string         password;
-    int                 user_limit;
+		bool                invite_only;
+		bool                topic_operator;
+		std::string         password;
+		int                 user_limit;
 
-    Channel(void);
-  public:
-    Channel(std::string const &name, Client &creator);
+		Channel(void);
+	public:
+		Channel(std::string const &name, Client &creator);
 
-    std::string getName(void) const;
-    void        join(Client &client, std::string pass);
+		std::string getName(void) const;
+		void        join(Client &client, std::string pass);
 };
 
 #endif
