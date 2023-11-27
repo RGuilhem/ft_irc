@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 14:22:06 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 19:32:05 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 
 Server::CommMap Server::commands_map = Server::init_commands_map();
 
-Server::Server(void) //TODO Think about init values
+Server::Server(void)
 {
 }
 
 Server::~Server(void)
 {
-	//TODO
+	//TODO Server desctructor
 	std::cerr << "Exiting server" << std::endl;
 	close(sockfd);
 	logfile.close();
@@ -53,6 +53,7 @@ void	Server::logmsg(std::string msg)
 	if (msg.find("\r\n") != std::string::npos)
 		msg.erase(msg.size() - 2, 2);
 	logfile << msg << std::endl;
+	std::cout << msg << std::endl;
 }
 
 Server::Server(std::string port_str, std::string pass) : password(pass), port(port_str)
@@ -180,8 +181,8 @@ void	Server::parseMessage(Client &client)
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
 		client.clearEndReadBuff();
-		std::cout << client.getReadBuff() << std::endl;
-		logmsg("Recv: " + client.getReadBuff());
+		//std::cout << client.getReadBuff() << std::endl;
+		logmsg("<- " + client.getNickname() + ": " + client.getReadBuff());
 		try {
 			Command command(client.getReadBuff());
 			Exec_func	func = commands_map[command.getCommand()];
@@ -195,11 +196,11 @@ void	Server::parseMessage(Client &client)
 
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
-	std::cout << "Receiving data on fd: " << pfd.fd << std::endl;
 	char	buff[BUFF_SIZE] = "";
 	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
 	if (received > 0)
 	{
+		//std::cout << "<-" << pfd.fd << ": " << std::endl;
 		clients.at(pfd.fd).appendRead(buff);
 		parseMessage(clients.at(pfd.fd));
 	}
@@ -228,7 +229,7 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	message = client.getSendBuff();
 	if (message.empty())
 		return ;
-	logmsg("Sent: " + message);
+	logmsg("-> " + client.getNickname() + ": " + message);
 	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
 	if (message.find(":localhost ERROR") != std::string::npos)
 	{
@@ -257,9 +258,26 @@ bool    Server::channelExists(std::string name)
 
 Client  &Server::clientFromNick(std::string nick)
 {
-	//TODO implement
-	(void) nick;
+	std::map<int, Client>::iterator it;
+	for (it = clients.begin(); it != clients.end(); it++)
+	{
+		if (it->second.getNickname() == nick)
+			return (it->second);
+	}
+	throw std::invalid_argument("Client not found");
 	return (clients.at(0));
+}
+
+void	Server::broadcast(std::string msg, std::vector<std::string> const &targets)
+{
+	for (unsigned int i = 0; i < targets.size(); i++)
+	{
+		if (std::find(nicknames.begin(), nicknames.end(), targets[i]) != nicknames.end())
+		{
+			Client	&target = clientFromNick(targets[i]);
+			target.appendSend(msg);
+		}
+	}
 }
 
 Channel    &Server::channelFromName(std::string name)
@@ -269,7 +287,8 @@ Channel    &Server::channelFromName(std::string name)
 		if (channels[i].getName() == name)
 			return (channels[i]);
 	}
-	return (channels[-1]); //TODO this is sketchy
+	throw std::invalid_argument("Channel not found");
+	return (channels[-1]);
 }
 
 std::string	Server::getPort(void) const

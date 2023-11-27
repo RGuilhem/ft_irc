@@ -1,0 +1,9 @@
+PASS wrong
+PASS test_pass
+CAP * LS
+NICK u2
+CAP END
+USER u2 0 * :u2
+JOIN #channel
+PART #channel
+QUIT :Exiting u2
