@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 17:44:41 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 17:55:35 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ class Server
 
 	std::map<int, Client>		clients;
 	Client  &clientFromNick(std::string nick);
+	void	broadcast(std::string msg, std::vector<std::string> const &targets);
 	std::vector<std::string>	nicknames;
 	std::vector<Channel>        channels;
 	bool    channelExists(std::string name);

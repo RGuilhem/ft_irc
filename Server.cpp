@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 17:53:38 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 17:58:49 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,18 @@ Client  &Server::clientFromNick(std::string nick)
 	}
 	throw std::invalid_argument("Client not found");
 	return (clients.at(0));
+}
+
+void	Server::broadcast(std::string msg, std::vector<std::string> const &targets)
+{
+	for (unsigned int i = 0; i < targets.size(); i++)
+	{
+		if (std::find(nicknames.begin(), nicknames.end(), targets[i]) != nicknames.end())
+		{
+			Client	&target = clientFromNick(targets[i]);
+			target.appendSend(msg);
+		}
+	}
 }
 
 Channel    &Server::channelFromName(std::string name)
