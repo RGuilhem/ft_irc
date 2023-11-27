@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 19:26:48 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 19:32:05 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	Server::logmsg(std::string msg)
 	if (msg.find("\r\n") != std::string::npos)
 		msg.erase(msg.size() - 2, 2);
 	logfile << msg << std::endl;
+	std::cout << msg << std::endl;
 }
 
 Server::Server(std::string port_str, std::string pass) : password(pass), port(port_str)
@@ -180,7 +181,7 @@ void	Server::parseMessage(Client &client)
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
 		client.clearEndReadBuff();
-		std::cout << client.getReadBuff() << std::endl;
+		//std::cout << client.getReadBuff() << std::endl;
 		logmsg("<- " + client.getNickname() + ": " + client.getReadBuff());
 		try {
 			Command command(client.getReadBuff());
@@ -199,7 +200,7 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
 	if (received > 0)
 	{
-		std::cout << "<-" << pfd.fd << ": " << std::endl;
+		//std::cout << "<-" << pfd.fd << ": " << std::endl;
 		clients.at(pfd.fd).appendRead(buff);
 		parseMessage(clients.at(pfd.fd));
 	}
