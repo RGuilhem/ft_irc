@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 14:22:06 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 15:06:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 
 Server::CommMap Server::commands_map = Server::init_commands_map();
 
-Server::Server(void) //TODO Think about init values
+Server::Server(void)
 {
 }
 
 Server::~Server(void)
 {
-	//TODO
+	//TODO Server desctructor
 	std::cerr << "Exiting server" << std::endl;
 	close(sockfd);
 	logfile.close();

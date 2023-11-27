@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 14:22:52 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 15:06:16 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ class Client
 		void		clearEndReadBuff(void);
 		void		clearSentSendBuff(int sent);
 
-		void		checkRegistration(void); //TODO inmplement
+		void		checkRegistration(void);
 
 		std::string getReadBuff(void) const;
 		std::string getSendBuff(void) const;
