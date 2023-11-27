@@ -1,4 +1,6 @@
 #include "Channel.hpp"
+#include "Replies.hpp"
+#include "Server.hpp"
 
 Channel::Channel(std::string const &name, Client &creator)
 {
@@ -9,6 +11,7 @@ Channel::Channel(std::string const &name, Client &creator)
 	user_limit = 10;
 	operators.push_back(creator);
 	users.push_back(creator);
+	creator.appendSend(JOIN(creator.getNickname(), name));
 }
 
 std::string Channel::getName(void) const
