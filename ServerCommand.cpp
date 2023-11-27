@@ -65,7 +65,7 @@ void	Server::nick(Client &client, Command &command)
 		client.appendSend(ERR_NICKNAMEINUSE(client.getNickname(), args[0]));
 		return ;
 	}
-	if (args[0].find_first_of(":# ") != std::string::npos || args[0].size() == 0)
+	if (args[0].find_first_of(":# ") != std::string::npos || args[0].size() == 0) //TODO , invalid
 	{
 		client.appendSend(ERR_ERRONEUSNICKNAME(client.getNickname(), args[0]));
 		return ;
@@ -73,7 +73,7 @@ void	Server::nick(Client &client, Command &command)
 	std::string	curr_nick = client.getNickname();
 	client.setNickname(args[0]);
 	nicknames.push_back(args[0]);
-	if (curr_nick.size() != 0)
+	if (curr_nick.size() != 0) // TODO broadcast nick change to other users
     {
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
         client.appendSend(":" + curr_nick + " NICK " + args[0]);
@@ -129,6 +129,7 @@ void	Server::ping(Client &client, Command &command)
 void	Server::quit(Client &client, Command &command)
 {
     //TODO broadcast quit to channels client is quiting
+    //TODO exit channels
     std::vector<std::string> args = command.getArgs();
 
     std::string reason = "";
@@ -140,32 +141,33 @@ void	Server::quit(Client &client, Command &command)
 void	Server::join(Client &client, Command &command)
 {
 	std::string	comm = command.getCommand();
-    std::vector<std::string> args = command.getArgs();
-    if (args.size() == 0)
-    {
-      client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
-      return ;
-    }
-    //TODO check channel name mask
-    if (!channelExists(args[0])) //create new channel
-    {
-      Channel   newChannel(args[0], client);
-      channels.push_back(newChannel);
-    }
-    else //try to connect to existing channel
-    {
-      try {
-        channelFromName(args[0]).join(client, ""); //TODO add pw
-        //TODO add server OK response
-      } catch (std::exception &e) {
-        client.appendSend(e.what());
-      }
-    }
+	std::vector<std::string> args = command.getArgs();
+	if (args.size() == 0)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	//TODO check channel name mask
+	if (!channelExists(args[0])) //create new channel
+	{
+		Channel   newChannel(args[0], client);
+		channels.push_back(newChannel);
+	}
+	else //try to connect to existing channel
+	{
+		try {
+			channelFromName(args[0]).join(client, ""); //TODO add pw
+													   //TODO add server OK response
+		} catch (std::exception &e) {
+			client.appendSend(e.what());
+		}
+	}
 }
 
 void	Server::privmsg(Client &client, Command &command)
 {
     //TODO implement channel privmsg
+	(void) client;
 	std::string	comm = command.getCommand();
     std::vector<std::string> args = command.getArgs();
 }

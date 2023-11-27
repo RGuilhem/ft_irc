@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/26 21:46:27 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 14:15:57 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,8 @@ bool    Server::channelExists(std::string name)
 Client  &Server::clientFromNick(std::string nick)
 {
   //TODO implement
+  (void) nick;
+  return (clients.at(0));
 }
 
 Channel    &Server::channelFromName(std::string name)
@@ -267,7 +269,7 @@ Channel    &Server::channelFromName(std::string name)
     if (channels[i].getName() == name)
       return (channels[i]);
   }
-  return (channels[0]); //TODO this is sketchy
+  return (channels[-1]); //TODO this is sketchy
 }
 
 std::string	Server::getPort(void) const
