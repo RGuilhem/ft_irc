@@ -15,6 +15,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("QUIT"), &Server::quit));
 	comms.insert(std::make_pair(std::string("JOIN"), &Server::join));
 	comms.insert(std::make_pair(std::string("PRIVMSG"), &Server::privmsg));
+	comms.insert(std::make_pair(std::string("PART"), &Server::part));
 	return (comms);
 }
 
@@ -173,4 +174,30 @@ void	Server::privmsg(Client &client, Command &command)
 	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
+}
+
+void	Server::part(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() == 0)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	} //TODO add error checking PART
+	if (!channelExists(args[0]))
+	{
+		//TODO nosuchchan
+		return ;
+	}
+	Channel	&chan = channelFromName(args[0]);
+	std::vector<std::string> chan_nicks = chan.getUsersNicks();
+	if (std::find(chan_nicks.begin(), chan_nicks.end(), client.getNickname()) != chan_nicks.end())
+	{
+	}
+	else
+	{
+		//TODO notonchan
+	}
 }
