@@ -9,7 +9,9 @@ osname=$(uname)
 darwin="Darwin"
 if [ "$osname" = "$darwin" ];
 then
-	cat ./tests/valid_auth.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
+	cat ./tests/channel_u1.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
+	sleep 1
+	cat ./tests/channel_u2.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
 else
 	cat ./tests/valid_auth.txt | slowcat | nc -C localhost 1500 > ./tests/valid_auth.log &
 fi

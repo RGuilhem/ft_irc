@@ -152,6 +152,7 @@ void	Server::join(Client &client, Command &command)
 	{
 		Channel   newChannel(args[0], client);
 		channels.push_back(newChannel);
+		client.appendSend(JOIN(client.getNickname(), args[0]));
 	}
 	else //try to connect to existing channel
 	{
@@ -159,7 +160,7 @@ void	Server::join(Client &client, Command &command)
 			Channel &chan = channelFromName(args[0]); //TODO add pw
 													   //TODO add server OK response
 			chan.join(client, "");
-			broadcast("test", chan.getUsersNicks());
+			broadcast(JOIN(client.getNickname(), args[0]), chan.getUsersNicks());
 		} catch (std::exception &e) {
 			client.appendSend(e.what());
 		}
@@ -168,7 +169,7 @@ void	Server::join(Client &client, Command &command)
 
 void	Server::privmsg(Client &client, Command &command)
 {
-	//TODO implement channel privmsg
+	//TODO implement privmsg
 	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();

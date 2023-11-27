@@ -22,4 +22,7 @@
 
 # define ERROR(reason) (":localhost ERROR :" + reason)
 
+//JOIN
+# define JOIN(source, channel) (":" + source + " JOIN " + channel)
+
 #endif
