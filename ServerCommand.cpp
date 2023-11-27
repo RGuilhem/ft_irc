@@ -74,17 +74,17 @@ void	Server::nick(Client &client, Command &command)
 	client.setNickname(args[0]);
 	nicknames.push_back(args[0]);
 	if (curr_nick.size() != 0) // TODO broadcast nick change to other users
-    {
+	{
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
-        client.appendSend(":" + curr_nick + " NICK " + args[0]);
-    }
+		client.appendSend(":" + curr_nick + " NICK " + args[0]);
+	}
 }
 
 void	Server::user(Client &client, Command &command)
 {
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
-	
+
 	if (client.getRegistered() == true)
 	{
 		client.appendSend(ERR_ALREADYREGISTERED(client.getNickname()));
@@ -115,27 +115,27 @@ void	Server::user(Client &client, Command &command)
 void	Server::cap(Client &client, Command &command)
 {
 	std::vector<std::string> args = command.getArgs();
-    if (args.size() > 0 && args[0] != "END")
-      client.appendSend(":localhost CAP * LS");
+	if (args.size() > 0 && args[0] != "END")
+		client.appendSend(":localhost CAP * LS");
 }
 
 void	Server::ping(Client &client, Command &command)
 {
 	std::vector<std::string> args = command.getArgs();
-    if (args.size() != 0)
-        client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
+	if (args.size() != 0)
+		client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
 }
 
 void	Server::quit(Client &client, Command &command)
 {
-    //TODO broadcast quit to channels client is quiting
-    //TODO exit channels
-    std::vector<std::string> args = command.getArgs();
+	//TODO broadcast quit to channels client is quiting
+	//TODO exit channels
+	std::vector<std::string> args = command.getArgs();
 
-    std::string reason = "";
-    if (args.size() > 0)
-        reason = args[0];
-    client.appendSend(ERROR(reason));
+	std::string reason = "";
+	if (args.size() > 0)
+		reason = args[0];
+	client.appendSend(ERROR(reason));
 }
 
 void	Server::join(Client &client, Command &command)
@@ -166,8 +166,8 @@ void	Server::join(Client &client, Command &command)
 
 void	Server::privmsg(Client &client, Command &command)
 {
-    //TODO implement channel privmsg
+	//TODO implement channel privmsg
 	(void) client;
 	std::string	comm = command.getCommand();
-    std::vector<std::string> args = command.getArgs();
+	std::vector<std::string> args = command.getArgs();
 }

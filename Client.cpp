@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 21:08:49 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/27 14:22:05 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Client::Client(int i) : fd(i)
 {
 	(void) fd;
 	is_registered = false;
-    hostname = "127.0.0.1";
+	hostname = "127.0.0.1";
 }
 
 Client::~Client(void)
@@ -62,12 +62,12 @@ void	Client::checkRegistration(void)
 
 std::string Client::getReadBuff(void) const
 {
-  return (read_buff);
+	return (read_buff);
 }
 
 std::string Client::getSendBuff(void) const
 {
-  return (send_buff);
+	return (send_buff);
 }
 
 std::string	Client::getId(void) const
