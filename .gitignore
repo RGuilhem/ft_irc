@@ -1,6 +1,7 @@
 *.swp
 *.log
 ircserv
+.vscode
 # Prerequisites
 *.d
 
