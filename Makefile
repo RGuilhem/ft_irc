@@ -1,5 +1,6 @@
 CC = c++
-FLAGS = -Wall -Wextra -Werror -g3 -std=c++98
+#TODO try to add -Weffc++
+FLAGS = -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fsanitize=address -g -O2 -std=c++98 -ansi
 RM = rm -rf
 
 SRC = main.cpp			\
