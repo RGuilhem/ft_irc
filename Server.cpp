@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 19:32:05 by graux            ###   ########.fr       */
+/*   Updated: 2023/11/28 10:28:14 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <poll.h>
 #include <string>
 #include <cstdlib>
+#include <algorithm>
 
 Server::CommMap Server::commands_map = Server::init_commands_map();
 

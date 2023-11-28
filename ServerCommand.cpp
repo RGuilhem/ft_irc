@@ -153,13 +153,11 @@ void	Server::join(Client &client, Command &command)
 	{
 		Channel   newChannel(args[0], client);
 		channels.push_back(newChannel);
-		client.appendSend(JOIN(client.getNickname(), args[0]));
 	}
 	else //try to connect to existing channel
 	{
 		try {
 			Channel &chan = channelFromName(args[0]); //TODO add pw
-													   //TODO add server OK response
 			chan.join(client, "");
 			broadcast(JOIN(client.getNickname(), args[0]), chan.getUsersNicks());
 		} catch (std::exception &e) {

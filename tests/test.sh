@@ -9,12 +9,13 @@ osname=$(uname)
 darwin="Darwin"
 if [ "$osname" = "$darwin" ];
 then
-	cat ./tests/channel_u1.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
-	sleep 0.2
-	cat ./tests/channel_u2.txt | slowcat | nc -c localhost 1500 > ./tests/valid_auth.log &
+    option="-c"
 else
-	cat ./tests/valid_auth.txt | slowcat | nc -C localhost 1500 > ./tests/valid_auth.log &
+    option="-C"
 fi
+cat ./tests/channel_u1.txt | slowcat | nc $option localhost 1500 > ./tests/valid_auth.log &
+sleep 0.2
+cat ./tests/channel_u2.txt | slowcat | nc $option localhost 1500 > ./tests/valid_auth.log &
 sleep 5
 kill -SIGINT $pid
 #todo kill process juste au cas ou...

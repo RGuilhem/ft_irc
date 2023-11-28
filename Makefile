@@ -1,5 +1,6 @@
 CC = c++
-FLAGS = -Wall -Wextra -Werror -g3 -std=c++98
+#TODO try to add -Weffc++
+FLAGS = -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fsanitize=address -g -O2 -std=c++98 -ansi
 RM = rm -rf
 
 SRC = main.cpp			\
@@ -8,27 +9,35 @@ SRC = main.cpp			\
 	  Command.cpp		\
 	  ServerCommand.cpp	\
 	  Client.cpp
-#SRC_DIR = $(addprefix src/, $(SRC))
 OBJ = ${SRC:.cpp=.o}
+DEPENDS = ${SRC:.cpp=.d}
 
 NAME = ircserv
 
-#INCLUDES = -Iinclude/
-
-%.o: %.cpp
-	${CC} ${FLAGS} -c $< -o $@
-
 all: ${NAME}
+
+-include ($(DEPENDS))
+
+%.o: %.cpp Makefile
+	${CC} ${FLAGS} -MMD -MP -c $< -o $@
+
 
 $(NAME): $(OBJ)
 	$(CC) ${FLAGS} $(OBJ) -o $(NAME)
+	@$(MAKE) info
 
 re: fclean all
 
 clean:
-	${RM} ${OBJ}
+	${RM} ${OBJ} $(DEPENDS)
 
 fclean: clean
 	${RM} ${NAME}
 
-.PHONY: all re clean fclean
+info:
+	@echo -n "hostname: "
+	@uname -n
+	@echo -n "ip: "
+	@hostname -I
+
+.PHONY: all re clean fclean info
