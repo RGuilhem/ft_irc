@@ -22,6 +22,7 @@ all: ${NAME}
 
 $(NAME): $(OBJ)
 	$(CC) ${FLAGS} $(OBJ) -o $(NAME)
+	@make info
 
 re: fclean all
 
@@ -31,4 +32,10 @@ clean:
 fclean: clean
 	${RM} ${NAME}
 
-.PHONY: all re clean fclean
+info:
+	@echo -n "hostname: "
+	@uname -n
+	@echo -n "ip: "
+	@hostname -I
+
+.PHONY: all re clean fclean info
