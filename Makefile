@@ -22,7 +22,7 @@ all: ${NAME}
 
 $(NAME): $(OBJ)
 	$(CC) ${FLAGS} $(OBJ) -o $(NAME)
-	@make info
+	@$(MAKE) info
 
 re: fclean all
 
