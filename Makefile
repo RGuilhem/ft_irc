@@ -8,17 +8,18 @@ SRC = main.cpp			\
 	  Command.cpp		\
 	  ServerCommand.cpp	\
 	  Client.cpp
-#SRC_DIR = $(addprefix src/, $(SRC))
 OBJ = ${SRC:.cpp=.o}
+DEPENDS = ${SRC:.cpp=.d}
 
 NAME = ircserv
 
-#INCLUDES = -Iinclude/
-
-%.o: %.cpp
-	${CC} ${FLAGS} -c $< -o $@
-
 all: ${NAME}
+
+-include ($(DEPENDS))
+
+%.o: %.cpp Makefile
+	${CC} ${FLAGS} -MMD -MP -c $< -o $@
+
 
 $(NAME): $(OBJ)
 	$(CC) ${FLAGS} $(OBJ) -o $(NAME)
@@ -27,7 +28,7 @@ $(NAME): $(OBJ)
 re: fclean all
 
 clean:
-	${RM} ${OBJ}
+	${RM} ${OBJ} $(DEPENDS)
 
 fclean: clean
 	${RM} ${NAME}
