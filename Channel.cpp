@@ -8,9 +8,10 @@ Channel::Channel(std::string const &name, Client &creator)
 	this->name = name;
 	//TODO set default channel modes correctly
 	invite_only = false;
-	topic_operator = true;
+	topic_operator = false;
 	password = "";
 	user_limit = 10;
+	topic = "";
 	operators.push_back(creator);
 	users.push_back(creator);
 	creator.appendSend(JOIN(creator.getNickname(), name));
@@ -19,6 +20,11 @@ Channel::Channel(std::string const &name, Client &creator)
 std::string Channel::getName(void) const
 {
 	return (name);
+}
+
+std::string Channel::getTopic(void) const
+{
+	return (topic);
 }
 
 void Channel::join(Client &client, std::string pass)

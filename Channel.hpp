@@ -25,6 +25,7 @@ class Channel
 		Channel(std::string const &name, Client &creator);
 
 		std::string getName(void) const;
+		std::string getTopic(void) const;
 		void        join(Client &client, std::string pass);
 
 		std::vector<std::string> getUsersNicks(void) const;
