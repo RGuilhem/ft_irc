@@ -8,6 +8,7 @@ Channel::Channel(std::string const &name, Client &creator)
 	//TODO set default channel modes correctly
 	invite_only = false;
 	topic_operator = true;
+	password = "";
 	user_limit = 10;
 	operators.push_back(creator);
 	users.push_back(creator);
@@ -22,7 +23,9 @@ std::string Channel::getName(void) const
 void Channel::join(Client &client, std::string pass)
 {
 	//TODO throw on invalid join
-	(void) pass;
+	if (pass != this->password)
+		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), name));
+	//if everything is okay add client
 	users.push_back(client);
 }
 

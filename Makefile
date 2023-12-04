@@ -1,6 +1,6 @@
 CC = c++
 #TODO try to add -Weffc++
-FLAGS = -Wall -Wextra -Werror -fsanitize=address -g -std=c++98
+FLAGS = -Wall -Wextra -Werror -g -std=c++98
 RM = rm -rf
 
 SRC = main.cpp			\

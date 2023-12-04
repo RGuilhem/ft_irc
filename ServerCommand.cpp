@@ -169,7 +169,9 @@ void	Server::join(Client &client, Command &command)
 				chan.join(client, "");
 			broadcast(JOIN(client.getNickname(), name), chan.getUsersNicks());
 		} catch (std::exception &e) {
-			client.appendSend(e.what());
+			std::string response(e.what());
+			if (!response.empty())
+				client.appendSend(response);
 		}
 	}
 }
