@@ -70,6 +70,11 @@ bool	Channel::isInChannel(Client const &client) const
 	return (std::find(users.begin(), users.end(), client) != users.end());
 }
 
+bool	Channel::isOperator(Client const &client) const
+{
+	return (std::find(operators.begin(), operators.end(), client) != operators.end());
+}
+
 void	Channel::removeFromChannel(Client const &client)
 {
 	std::vector<Client>::iterator match;

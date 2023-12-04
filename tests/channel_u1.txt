@@ -8,6 +8,7 @@ JOIN #channel
 JOIN #other
 NICK u2
 PING 1
+KICK #other u2 :Why not
 PING 2
 PING 3
 NICK u2

@@ -39,4 +39,9 @@
 # define ERR_NOTONCHANNEL(client, channel) (":localhost 442 " + client + " " + channel + " :Not on channel")
 # define PART(source, channel, reason) (":" + source + " PART " + channel + " :" + reason)
 
+//KICK
+# define ERR_CHANOPRIVSNEEDED(client, channel) (":localhost 482 " + client + " " + channel + " :You are not channel operator")
+# define ERR_USERNOTINCHANNEL(client, nick, channel) (":localhost 441 " + client + " " + nick + " " + channel + " :They are not on that channel")
+# define KICK(source, channel, nick, reason) (":" + source + " KICK " + channel + " " + nick + " :" + reason)
+
 #endif

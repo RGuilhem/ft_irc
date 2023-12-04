@@ -6,7 +6,11 @@ CAP END
 USER u2 0 * :u2
 JOIN #channel
 JOIN #other
+KICK #channel u1
 PART #nosuchchan
+PING 1
+PING 2
+PING 3
 PART #other :Going out
 PART #other
 QUIT :Exiting u2

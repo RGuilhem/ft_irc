@@ -17,6 +17,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("JOIN"), &Server::join));
 	comms.insert(std::make_pair(std::string("PRIVMSG"), &Server::privmsg));
 	comms.insert(std::make_pair(std::string("PART"), &Server::part));
+	comms.insert(std::make_pair(std::string("KICK"), &Server::kick));
 	return (comms);
 }
 
@@ -231,4 +232,45 @@ void	Server::part(Client &client, Command &command)
 	}
 	else
 		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[0]));
+}
+
+void	Server::kick(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() < 2)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	if (!channelExists(args[0]))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[0]));
+		return ;
+	}
+	Channel	&chan = channelFromName(args[0]);
+	if (!chan.isOperator(client))
+	{
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), args[0]));
+		return ;
+	}
+	std::vector<std::string> chan_nicks = chan.getUsersNicks();
+	if (std::find(chan_nicks.begin(), chan_nicks.end(), args[1]) == chan_nicks.end())
+	{
+		client.appendSend(ERR_USERNOTINCHANNEL(client.getNickname(), args[1], args[0]));
+		return ;
+	}
+	if (chan.isInChannel(client))
+	{
+		Client &to_remove = clientFromNick(args[1]);
+		if (args.size() >= 3)
+			broadcast(KICK(client.getNickname(), args[0], args[1], args[2]), chan.getUsersNicks());
+		else
+			broadcast(KICK(client.getNickname(), args[0], args[1], ""), chan.getUsersNicks());
+		chan.removeFromChannel(to_remove);
+	}
+	else
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[0]));
+
 }

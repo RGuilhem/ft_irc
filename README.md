@@ -18,7 +18,7 @@
 - [ ] operators
 - [x] JOIN
 - [x] PART
-- [ ] KICK
+- [x] KICK
 - [ ] INVITE
 - [ ] TOPIC
 - [ ] MODE
