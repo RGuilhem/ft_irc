@@ -207,19 +207,28 @@ void	Server::part(Client &client, Command &command)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
-	} //TODO add error checking PART
+	}
 	if (!channelExists(args[0]))
 	{
-		//TODO nosuchchan
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[0]));
 		return ;
 	}
 	Channel	&chan = channelFromName(args[0]);
 	std::vector<std::string> chan_nicks = chan.getUsersNicks();
-	if (std::find(chan_nicks.begin(), chan_nicks.end(), client.getNickname()) != chan_nicks.end())
+	if (chan.isInChannel(client))
 	{
+		chan.removeFromChannel(client);
+		if (args.size() < 2) // TODO think about source
+		{
+			client.appendSend(PART(std::string("localhost"), args[0], ""));
+			broadcast(PART(client.getNickname(), args[0], ""), chan.getUsersNicks());
+		}
+		else
+		{
+			client.appendSend(PART(std::string("localhost"), args[0], args[1]));
+			broadcast(PART(client.getNickname(), args[0], args[1]), chan.getUsersNicks());
+		}
 	}
 	else
-	{
-		//TODO notonchan
-	}
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[0]));
 }

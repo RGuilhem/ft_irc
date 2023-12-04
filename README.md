@@ -17,7 +17,7 @@
 - [ ] message forwarding
 - [ ] operators
 - [x] JOIN
-- [ ] PART
+- [x] PART
 - [ ] KICK
 - [ ] INVITE
 - [ ] TOPIC
