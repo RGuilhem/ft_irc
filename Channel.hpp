@@ -17,7 +17,7 @@ class Channel
 		bool                invite_only;
 		bool                topic_operator;
 		std::string         password;
-		int                 user_limit;
+		unsigned int		user_limit;
 
 		Channel(void);
 	public:

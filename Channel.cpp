@@ -7,7 +7,7 @@ Channel::Channel(std::string const &name, Client &creator)
 {
 	this->name = name;
 	//TODO set default channel modes correctly
-	invite_only = true;
+	invite_only = false;
 	topic_operator = true;
 	password = "";
 	user_limit = 10;
@@ -30,6 +30,8 @@ void Channel::join(Client &client, std::string pass)
 		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), name));
 	if (invite_only && std::find(invited.begin(), invited.end(), client) == invited.end())
 		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), name));
+	if (users.size() == user_limit)
+		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), name));
 	//if everything is okay add client
 	users.push_back(client);
 }

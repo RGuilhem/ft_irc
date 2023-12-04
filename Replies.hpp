@@ -27,5 +27,6 @@
 # define ERR_BADCHANMASK(channel) (":localhost 476 " + channel + " :Bad channel mask")
 # define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " " + channel + " :Cannot join channel (+k)")
 # define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " " + channel + " :Cannot join channel (+i)")
+# define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + " :Cannot join channel (+l)")
 
 #endif
