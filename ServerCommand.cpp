@@ -168,8 +168,7 @@ void	Server::join(Client &client, Command &command)
 			else
 				chan.join(client, "");
 			broadcast(JOIN(client.getNickname(), name), chan.getUsersNicks());
-			if (!chan.getTopic().empty())
-				client.appendSend(RPL_TOPIC(client.getNickname(), chan.getName(), chan.getTopic()));
+			chan.greet(client);
 		} catch (std::exception &e) {
 			std::string response(e.what());
 			if (!response.empty())
