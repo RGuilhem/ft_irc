@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/28 10:28:14 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:32:50 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,7 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	if (message.empty())
 		return ;
 	logmsg("-> " + client.getNickname() + ": " + message);
-	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
+	sent = send(pfd.fd, message.c_str(), message.size(), 0);
 	if (message.find(":localhost ERROR") != std::string::npos)
 	{
 		close(pfd.fd);

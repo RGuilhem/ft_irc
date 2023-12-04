@@ -2,6 +2,7 @@
 #include "Replies.hpp"
 #include <iostream>
 #include <algorithm>
+#include <set>
 
 Server::CommMap	Server::init_commands_map(void)
 {
@@ -136,6 +137,18 @@ void	Server::quit(Client &client, Command &command)
 	std::string reason = "";
 	if (args.size() > 0)
 		reason = args[0];
+	std::set<std::string>	to_broadcast;
+	for (unsigned int i = 0; i < channels.size(); i++)
+	{
+		bool is_in = channels[i].isInChannel(client);
+		channels[i].removeFromChannel(client);
+		if (is_in)
+		{
+			std::vector<std::string> names_in_chan = channels[i].getUsersNicks();
+			to_broadcast.insert(names_in_chan.begin(), names_in_chan.end());
+		}
+	}
+	broadcast(QUIT(client.getNickname(), reason), std::vector<std::string>(to_broadcast.begin(), to_broadcast.end()));
 	client.appendSend(ERROR(reason));
 }
 

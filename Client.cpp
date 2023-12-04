@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 11:20:41 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:06:53 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	Client::setRealname(std::string const &val)
 	realname = val;
 }
 
-bool	Client::operator==(const Client &other)
+bool	Client::operator==(Client const &other) const
 {
 	return (this->nickname == other.nickname);
 }

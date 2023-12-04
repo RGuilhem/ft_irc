@@ -30,6 +30,8 @@ class Channel
 		void		greet(Client &client);
 
 		std::vector<std::string> getUsersNicks(void) const;
+		bool	isInChannel(Client const &client) const;
+		void	removeFromChannel(Client const &client);
 };
 
 #endif

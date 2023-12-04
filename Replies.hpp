@@ -21,6 +21,7 @@
 # define RPL_ENDOFMOTD(client) (":localhost 376 " + client + " :End of /MOTD command")
 
 # define ERROR(reason) (":localhost ERROR :" + reason)
+# define QUIT(source, reason) (":" + source + " QUIT :Quit: " + reason)
 
 //JOIN
 # define JOIN(source, channel) (":" + source + " JOIN " + channel)
