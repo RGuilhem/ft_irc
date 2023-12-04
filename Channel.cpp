@@ -92,3 +92,8 @@ void	Channel::removeFromChannel(Client const &client)
 	if (match != banned.end())
 		banned.erase(match);
 }
+
+bool	Channel::getInviteOnly(void) const
+{
+	return (invite_only);
+}

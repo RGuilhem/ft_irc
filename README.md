@@ -15,14 +15,12 @@
 ### Channel
 
 - [ ] message forwarding
-- [ ] operators
 - [x] JOIN
 - [x] PART
 - [x] KICK
 - [ ] INVITE
 - [ ] TOPIC
 - [ ] MODE
-- [ ] Config file for default channels and operators
 
 ### Bonus
 

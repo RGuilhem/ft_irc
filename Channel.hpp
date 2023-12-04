@@ -32,6 +32,8 @@ class Channel
 		std::vector<std::string> getUsersNicks(void) const;
 		bool	isInChannel(Client const &client) const;
 		bool	isOperator(Client const &client) const;
+		bool	getInviteOnly(void) const;
+		void	invite(std::string nick);
 		void	removeFromChannel(Client const &client);
 };
 

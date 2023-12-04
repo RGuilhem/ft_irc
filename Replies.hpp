@@ -44,4 +44,8 @@
 # define ERR_USERNOTINCHANNEL(client, nick, channel) (":localhost 441 " + client + " " + nick + " " + channel + " :They are not on that channel")
 # define KICK(source, channel, nick, reason) (":" + source + " KICK " + channel + " " + nick + " :" + reason)
 
+//INVITE
+# define ERR_USERONCHANNEL(client, nick, channel) (":localhost 443 " + client + " " + nick + " " + channel + " :is already on channel")
+# define INVITE(client, nick, channel) (":" + client + " INVITE " + nick + " " + channel)
+
 #endif

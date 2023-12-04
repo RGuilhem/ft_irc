@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 15:12:37 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 15:51:50 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ class Server
 	void	privmsg(Client &client, Command &command);
 	void	part(Client &client, Command &command);
 	void	kick(Client &client, Command &command);
+	void	invite(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);
