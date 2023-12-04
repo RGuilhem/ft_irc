@@ -149,7 +149,6 @@ void	Server::join(Client &client, Command &command)
 		return ;
 	}
 	std::string	name = args[0];
-	//TODO check channel name mask
 	if (name[0] != '#')
 	{
 		client.appendSend(ERR_BADCHANMASK(name));
