@@ -143,23 +143,32 @@ void	Server::join(Client &client, Command &command)
 {
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
-	if (args.size() == 0)
+	if (args.size() == 0 || args[0].length() == 0)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
 	}
+	std::string	name = args[0];
 	//TODO check channel name mask
-	if (!channelExists(args[0])) //create new channel
+	if (name[0] != '#')
 	{
-		Channel   newChannel(args[0], client);
+		client.appendSend(ERR_BADCHANMASK(name));
+		return ;
+	}
+	if (!channelExists(name)) //create new channel
+	{
+		Channel   newChannel(name, client);
 		channels.push_back(newChannel);
 	}
 	else //try to connect to existing channel
 	{
 		try {
-			Channel &chan = channelFromName(args[0]); //TODO add pw
-			chan.join(client, "");
-			broadcast(JOIN(client.getNickname(), args[0]), chan.getUsersNicks());
+			Channel &chan = channelFromName(name); //TODO add pw
+			if (args.size() >= 2)
+				chan.join(client, args[1]);
+			else
+				chan.join(client, "");
+			broadcast(JOIN(client.getNickname(), name), chan.getUsersNicks());
 		} catch (std::exception &e) {
 			client.appendSend(e.what());
 		}

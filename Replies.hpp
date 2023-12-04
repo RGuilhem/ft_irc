@@ -24,5 +24,6 @@
 
 //JOIN
 # define JOIN(source, channel) (":" + source + " JOIN " + channel)
+# define ERR_BADCHANMASK(chan_name) (":localhost 476 " + chan_name + " :Bad channel mask")
 
 #endif
