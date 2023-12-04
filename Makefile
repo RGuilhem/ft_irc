@@ -1,6 +1,6 @@
 CC = c++
 #TODO try to add -Weffc++
-FLAGS = -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fsanitize=address -g -O2 -std=c++98 -ansi
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g -std=c++98
 RM = rm -rf
 
 SRC = main.cpp			\
@@ -24,7 +24,8 @@ all: ${NAME}
 
 $(NAME): $(OBJ)
 	$(CC) ${FLAGS} $(OBJ) -o $(NAME)
-	@$(MAKE) info
+	@echo "hostname: "
+	@uname -n
 
 re: fclean all
 
@@ -33,11 +34,5 @@ clean:
 
 fclean: clean
 	${RM} ${NAME}
-
-info:
-	@echo -n "hostname: "
-	@uname -n
-	@echo -n "ip: "
-	@hostname -I
 
 .PHONY: all re clean fclean info
