@@ -8,8 +8,7 @@
 - [x] Logging capability
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
-- [ ] QUIT
-- [ ] HELP
+- [x] QUIT
 - [ ] AWAY ??
 - [x] Server replies
 
