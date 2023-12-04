@@ -4,12 +4,11 @@
 ### General
 
 - [x] handling of multiple clients
-- [ ] hostname and ip info for clients
+- [x] hostname and ip info for clients
 - [x] Logging capability
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
-- [ ] QUIT
-- [ ] HELP
+- [x] QUIT
 - [ ] AWAY ??
 - [x] Server replies
 
@@ -17,8 +16,7 @@
 
 - [ ] message forwarding
 - [ ] operators
-- [ ] JOIN
-- [ ] OPER ??
+- [x] JOIN
 - [ ] PART
 - [ ] KICK
 - [ ] INVITE

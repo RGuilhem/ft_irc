@@ -13,20 +13,25 @@ class Channel
 		std::vector<Client>   users;
 		std::vector<Client>   operators;
 		std::vector<Client>   invited;
+		std::vector<Client>   banned;
 
 		bool                invite_only;
 		bool                topic_operator;
 		std::string         password;
-		int                 user_limit;
+		unsigned int		user_limit;
 
 		Channel(void);
 	public:
 		Channel(std::string const &name, Client &creator);
 
 		std::string getName(void) const;
+		std::string getTopic(void) const;
 		void        join(Client &client, std::string pass);
+		void		greet(Client &client);
 
 		std::vector<std::string> getUsersNicks(void) const;
+		bool	isInChannel(Client const &client) const;
+		void	removeFromChannel(Client const &client);
 };
 
 #endif

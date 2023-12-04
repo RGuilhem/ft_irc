@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/11/28 10:28:14 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:47:18 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	Server::parseMessage(Client &client)
 	{
 		client.clearEndReadBuff();
 		//std::cout << client.getReadBuff() << std::endl;
-		logmsg("<- " + client.getNickname() + ": " + client.getReadBuff());
+		logmsg(BLUE "<- " + client.getNickname() + ": " + client.getReadBuff());
 		try {
 			Command command(client.getReadBuff());
 			Exec_func	func = commands_map[command.getCommand()];
@@ -230,10 +230,12 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	message = client.getSendBuff();
 	if (message.empty())
 		return ;
-	logmsg("-> " + client.getNickname() + ": " + message);
-	sent = send(pfd.fd, message.c_str(), message.size(), 0);//TODO maybe check the flags
+	logmsg(GREEN "-> " + client.getNickname() + ": " + message);
+	sent = send(pfd.fd, message.c_str(), message.size(), 0);
 	if (message.find(":localhost ERROR") != std::string::npos)
 	{
+		clients.erase(clients.find(pfd.fd));
+		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), client.getNickname()));
 		close(pfd.fd);
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{

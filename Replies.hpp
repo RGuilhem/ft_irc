@@ -21,9 +21,17 @@
 # define RPL_ENDOFMOTD(client) (":localhost 376 " + client + " :End of /MOTD command")
 
 # define ERROR(reason) (":localhost ERROR :" + reason)
+# define QUIT(source, reason) (":" + source + " QUIT :Quit: " + reason)
 
 //JOIN
 # define JOIN(source, channel) (":" + source + " JOIN " + channel)
-# define ERR_BADCHANMASK(chan_name) (":localhost 476 " + chan_name + " :Bad channel mask")
+# define ERR_BADCHANMASK(channel) (":localhost 476 " + channel + " :Bad channel mask")
+# define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " " + channel + " :Cannot join channel (+k)")
+# define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " " + channel + " :Cannot join channel (+i)")
+# define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + " :Cannot join channel (+l)")
+# define ERR_BANNEDFROMCHAN(client, channel) (":localhost 474 " + client + " " + channel + " :Cannot join channel (+b)")
+# define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " :" + topic)
+# define RPL_NAMREPLY(client, channel, name) (":localhost 353 " + client + " = " + channel + " :" + name)
+# define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /Nameslist")
 
 #endif
