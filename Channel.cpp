@@ -1,6 +1,7 @@
 #include "Channel.hpp"
 #include "Replies.hpp"
 #include "Server.hpp"
+#include <iostream>
 
 Channel::Channel(std::string const &name, Client &creator)
 {
@@ -23,6 +24,8 @@ std::string Channel::getName(void) const
 void Channel::join(Client &client, std::string pass)
 {
 	//TODO throw on invalid join
+	if (std::find(users.begin(), users.end(), client) != users.end())
+		throw std::invalid_argument("");
 	if (pass != this->password)
 		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), name));
 	//if everything is okay add client

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/11/27 15:06:16 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 11:19:44 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class Client
 	public:
 		Client(int fd);
 		~Client();
+		bool	operator==(const Client &other);
 
 		void		appendRead(std::string newData);
 		void		appendSend(std::string newData);
