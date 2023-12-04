@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 14:37:58 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:45:23 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 
 # define BACKLOG 10
 # define BUFF_SIZE 512
+# define GREEN "\e[0;32m"
+# define BLUE "\e[0;34m"
+# define RESET_COL "\e[0m"
 
 extern bool server_off;
 

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 14:37:48 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/04 14:47:18 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ void	Server::parseMessage(Client &client)
 	{
 		client.clearEndReadBuff();
 		//std::cout << client.getReadBuff() << std::endl;
-		logmsg("<- " + client.getNickname() + ": " + client.getReadBuff());
+		logmsg(BLUE "<- " + client.getNickname() + ": " + client.getReadBuff());
 		try {
 			Command command(client.getReadBuff());
 			Exec_func	func = commands_map[command.getCommand()];
@@ -230,7 +230,7 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	message = client.getSendBuff();
 	if (message.empty())
 		return ;
-	logmsg("-> " + client.getNickname() + ": " + message);
+	logmsg(GREEN "-> " + client.getNickname() + ": " + message);
 	sent = send(pfd.fd, message.c_str(), message.size(), 0);
 	if (message.find(":localhost ERROR") != std::string::npos)
 	{
