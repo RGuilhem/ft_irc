@@ -32,6 +32,8 @@ void Channel::join(Client &client, std::string pass)
 		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), name));
 	if (users.size() == user_limit)
 		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), name));
+	if (std::find(banned.begin(), banned.end(), client) != banned.end())
+		throw std::invalid_argument(ERR_BANNEDFROMCHAN(client.getNickname(), name));
 	//if everything is okay add client
 	users.push_back(client);
 }

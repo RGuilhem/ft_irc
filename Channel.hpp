@@ -13,6 +13,7 @@ class Channel
 		std::vector<Client>   users;
 		std::vector<Client>   operators;
 		std::vector<Client>   invited;
+		std::vector<Client>   banned;
 
 		bool                invite_only;
 		bool                topic_operator;
