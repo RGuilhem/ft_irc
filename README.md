@@ -4,7 +4,7 @@
 ### General
 
 - [x] handling of multiple clients
-- [ ] hostname and ip info for clients
+- [x] hostname and ip info for clients
 - [x] Logging capability
 - [x] client registration PASS NICK USER
 - [ ] PRIVMSG
@@ -17,8 +17,7 @@
 
 - [ ] message forwarding
 - [ ] operators
-- [ ] JOIN
-- [ ] OPER ??
+- [x] JOIN
 - [ ] PART
 - [ ] KICK
 - [ ] INVITE
