@@ -13,4 +13,5 @@ PING 2
 PING 3
 NICK u2
 PING 4
+MODE #other
 QUIT :Exiting u1

@@ -37,7 +37,7 @@ void Channel::join(Client &client, std::string pass)
 		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), name));
 	if (invite_only && std::find(invited.begin(), invited.end(), client) == invited.end())
 		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), name));
-	if (users.size() == user_limit)
+	if (user_limit > 0 && users.size() > (unsigned int) user_limit)
 		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), name));
 	if (std::find(banned.begin(), banned.end(), client) != banned.end())
 		throw std::invalid_argument(ERR_BANNEDFROMCHAN(client.getNickname(), name));
@@ -98,4 +98,24 @@ bool	Channel::getInviteOnly(void) const
 void	Channel::invite(Client &client)
 {
 	invited.push_back(client);
+}
+
+std::string	Channel::modeString(void) const
+{
+	std::string mode;
+
+	if (invite_only)
+		mode += "i";
+	if (topic_operator)
+		mode += "t";
+	if (!password.empty())
+		mode += "k";
+	if (user_limit != -1)
+	{
+		mode += "l ";
+		mode += std::to_string(user_limit);
+	}
+	if (!mode.empty())
+		mode.insert(0, "+");
+	return (mode);
 }

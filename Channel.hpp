@@ -18,7 +18,7 @@ class Channel
 		bool                invite_only;
 		bool                topic_operator;
 		std::string         password;
-		unsigned int		user_limit;
+		int					user_limit;
 
 		Channel(void);
 	public:
@@ -35,6 +35,7 @@ class Channel
 		bool	getInviteOnly(void) const;
 		void	invite(Client &client);
 		void	removeFromChannel(Client const &client);
+		std::string	modeString(void) const;
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/05 09:40:43 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/05 10:28:29 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ class Server
 	void	part(Client &client, Command &command);
 	void	kick(Client &client, Command &command);
 	void	invite(Client &client, Command &command);
+	void	mode(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);

@@ -49,4 +49,7 @@
 # define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel)
 # define INVITE(client, nick, channel) (":" + client + " INVITE " + nick + " " + channel)
 
+//MODE
+# define RPL_CHANNELMODEIS(client, channel, mode) (":localhost 324 " + client + " " + channel + " " + mode)
+
 #endif

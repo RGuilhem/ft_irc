@@ -19,6 +19,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("PART"), &Server::part));
 	comms.insert(std::make_pair(std::string("KICK"), &Server::kick));
 	comms.insert(std::make_pair(std::string("INVITE"), &Server::invite));
+	comms.insert(std::make_pair(std::string("MODE"), &Server::mode));
 	return (comms);
 }
 
@@ -195,6 +196,7 @@ void	Server::join(Client &client, Command &command)
 void	Server::privmsg(Client &client, Command &command)
 {
 	//TODO implement privmsg
+	std::cout << "====== NOT IMPLEMENTED ======" << std::endl;
 	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
@@ -313,4 +315,29 @@ void	Server::invite(Client &client, Command &command)
 	Client	&invited = clientFromNick(invited_nick);
 	chan.invite(invited);
 	invited.appendSend(INVITE(client.getNickname(), invited_nick, chan_name));
+}
+
+void	Server::mode(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() < 1)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string target = args[0];
+	if (!channelExists(target))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
+		return ;
+	}
+	Channel	&chan = channelFromName(target);
+	if (args.size() == 1) //show mode
+		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
+	else //set mode
+	{
+		std::string mode = args[1];
+	}
 }
