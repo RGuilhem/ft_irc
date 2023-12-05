@@ -214,10 +214,17 @@ void	Server::privmsg(Client &client, Command &command)
 		Client &c_target = clientFromNick(target);
 		c_target.appendSend(PRIVMSG(client.getNickname(), target, message));
 	}
-	else //msg to channel
+	else if (!target.empty() && target[0] == '#') //msg to channel
 	{
+		if (channelExists(target))
+		{
+			Channel	&chan = channelFromName(target);
+			if (chan.isInChannel(client))
+				broadcast(PRIVMSG(client.getNickname(), target, message), chan.getUsersNicks());
+		}
 	}
-	// target does not exist
+	else
+		client.appendSend(ERR_NOSUCHNICK(client.getNickname(), target));
 }
 
 void	Server::part(Client &client, Command &command)

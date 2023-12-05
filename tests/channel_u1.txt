@@ -7,6 +7,7 @@ JOIN #channel
 PING 1
 PING 3
 PRIVMSG u2 :Salut comment ca va?
+PRIVMSG #channel :Hello aussi
 PING 1
 PING 3
 QUIT :Exiting u1

@@ -55,5 +55,6 @@
 
 //PRIVMSG
 # define PRIVMSG(source, target, message) (":" + source + " PRIVMSG " + target + " :" + message)
+# define ERR_NOSUCHNICK(client, target) (":localhost 401 " + client + " " + target + " :No such nick/target")
 
 #endif
