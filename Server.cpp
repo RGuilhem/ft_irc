@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 14:47:18 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/05 17:05:09 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,17 +181,15 @@ void	Server::parseMessage(Client &client)
 	std::string	message = client.getReadBuff();
 	if (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
-		client.clearEndReadBuff();
-		//std::cout << client.getReadBuff() << std::endl;
-		logmsg(BLUE "<- " + client.getNickname() + ": " + client.getReadBuff());
+		logmsg(BLUE "<- " + client.getNickname() + ": " + client.nextRead());
 		try {
-			Command command(client.getReadBuff());
+			Command command(client.nextRead());
 			Exec_func	func = commands_map[command.getCommand()];
 			(this->*func)(client, command);
 		} catch (std::exception &e) {
 			std::cerr << e.what() << std::endl;
 		}
-		client.resetReadBuff();
+		client.clearNextRead();
 	}
 }
 
@@ -201,7 +199,6 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
 	if (received > 0)
 	{
-		//std::cout << "<-" << pfd.fd << ": " << std::endl;
 		clients.at(pfd.fd).appendRead(buff);
 		parseMessage(clients.at(pfd.fd));
 	}
