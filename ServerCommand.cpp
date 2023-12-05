@@ -285,30 +285,32 @@ void	Server::invite(Client &client, Command &command)
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
 	}
-	if (!channelExists(args[1]))
+	std::string	chan_name = args[1];
+	std::string	invited_nick = args[0];
+	if (!channelExists(chan_name))
 	{
-		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[1]));
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), chan_name));
 		return ;
 	}
-	Channel	&chan = channelFromName(args[1]);
+	Channel	&chan = channelFromName(chan_name);
 	if (!chan.isInChannel(client))
 	{
-		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[1]));
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), chan_name));
 		return ;
 	}
 	std::vector<std::string> chan_nicks = chan.getUsersNicks();
-	if (std::find(chan_nicks.begin(), chan_nicks.end(), args[1]) != chan_nicks.end())
+	if (std::find(chan_nicks.begin(), chan_nicks.end(), chan_name) != chan_nicks.end())
 	{
-		client.appendSend(ERR_USERONCHANNEL(client.getNickname(), args[0], args[1]));
+		client.appendSend(ERR_USERONCHANNEL(client.getNickname(), invited_nick, chan_name));
 		return ;
 	}
 	if (!chan.isOperator(client) && chan.getInviteOnly())
 	{
-		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), args[1]));
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), chan_name));
 		return ;
 	}
-	client.appendSend(RPL_INVITING(client.getNickname(), args[0], args[1]));
-	Client	&invited = clientFromNick(args[0]);
+	client.appendSend(RPL_INVITING(client.getNickname(), invited_nick, chan_name));
+	Client	&invited = clientFromNick(invited_nick);
 	chan.invite(invited);
-	invited.appendSend(INVITE(client.getNickname(), args[0], args[1]));
+	invited.appendSend(INVITE(client.getNickname(), invited_nick, chan_name));
 }
