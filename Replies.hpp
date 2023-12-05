@@ -53,4 +53,7 @@
 //MODE
 # define RPL_CHANNELMODEIS(client, channel, mode) (":localhost 324 " + client + " " + channel + " :" + mode)
 
+//PRIVMSG
+# define PRIVMSG(source, target, message) (":" + source + " PRIVMSG " + target + " :" + message)
+
 #endif

@@ -197,11 +197,27 @@ void	Server::join(Client &client, Command &command)
 
 void	Server::privmsg(Client &client, Command &command)
 {
-	//TODO implement privmsg
-	std::cout << "====== NOT IMPLEMENTED ======" << std::endl;
 	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
+
+	
+	if (args.size() < 2)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string target = args[0];
+	std::string message = args[1];
+	if (std::find(nicknames.begin(), nicknames.end(), target) != nicknames.end()) //msg to user
+	{
+		Client &c_target = clientFromNick(target);
+		c_target.appendSend(PRIVMSG(client.getNickname(), target, message));
+	}
+	else //msg to channel
+	{
+	}
+	// target does not exist
 }
 
 void	Server::part(Client &client, Command &command)

@@ -3,15 +3,8 @@ CAP * LS
 NICK u2
 CAP END
 USER u2 0 * :u2
-PING 1
-PING 2
-PING 3
 JOIN #channel
-MODE #channel
-MODE #channel +k test
-TOPIC #other
-JOIN #other
-PART #nosuchchan
-PART #other :Going out
-PART #other
+PING 1
+PING 3
+PRIVMSG u1 :Tres bien
 QUIT :Exiting u2
