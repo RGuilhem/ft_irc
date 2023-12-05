@@ -1,4 +1,3 @@
-PASS wrong
 PASS test_pass
 CAP * LS
 NICK u2

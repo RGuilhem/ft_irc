@@ -1,4 +1,3 @@
-PASS wrong
 PASS test_pass
 CAP * LS
 NICK u1
@@ -7,7 +6,6 @@ USER u1 0 * :u1
 JOIN #channel
 JOIN #other
 MODE #channel +kli pass 5
-MODE #channel
 MODE #channel -i+t
 PING 1
 INVITE u2 #channel

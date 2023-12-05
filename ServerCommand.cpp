@@ -338,7 +338,10 @@ void	Server::mode(Client &client, Command &command)
 	if (args.size() == 1) //show mode
 		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
 	else if (chan.isOperator(client)) //set mode
+	{
 		chan.changeMode(args, client);
+		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
+	}
 	else
 		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
 }

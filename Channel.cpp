@@ -104,20 +104,25 @@ void	Channel::invite(Client &client)
 std::string	Channel::modeString(void) const
 {
 	std::string mode;
+	std::string	end;
 
 	if (invite_only)
 		mode += "i";
 	if (topic_operator)
 		mode += "t";
 	if (!password.empty())
+	{
 		mode += "k";
+		end += " " + password;
+	}
 	if (user_limit != -1)
 	{
-		mode += "l ";
-		mode += std::to_string(user_limit);
+		mode += "l";
+		end += " " + std::to_string(user_limit);
 	}
 	if (!mode.empty())
 		mode.insert(0, "+");
+	mode += end;
 	return (mode);
 }
 
@@ -163,10 +168,6 @@ void	Channel::changeMode(std::vector<std::string> args, Client &client)
 	std::string mode = args[1];
 	std::vector<std::string> mode_args(args.begin() + 2, args.end());
 
-	for (unsigned int i = 0; i <  mode_args.size(); i++)
-	{
-		std::cout << mode_args[i] << std::endl;
-	}
 	if (mode[0] != '+' && mode[0] != '-')
 		return ;
 	bool			add = false;
