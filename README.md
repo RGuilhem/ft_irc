@@ -7,7 +7,8 @@
 - [x] hostname and ip info for clients
 - [x] Logging capability
 - [x] client registration PASS NICK USER
-- [x ] PRIVMSG
+- [x] PRIVMSG
+	- [ ] do not send to self
 - [x] QUIT
 - [x] Server replies
 - [ ] A lot of testing
@@ -20,6 +21,7 @@
 - [x] KICK
 - [x] INVITE
 - [ ] OPER
+- [ ] WHO
 - [x] TOPIC
 - [x] MODE
 
