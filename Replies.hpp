@@ -31,7 +31,26 @@
 # define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + " :Cannot join channel (+l)")
 # define ERR_BANNEDFROMCHAN(client, channel) (":localhost 474 " + client + " " + channel + " :Cannot join channel (+b)")
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " :" + topic)
+# define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic set")
 # define RPL_NAMREPLY(client, channel, name) (":localhost 353 " + client + " = " + channel + " :" + name)
 # define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /Nameslist")
+
+//PART
+# define ERR_NOSUCHCHANNEL(client, channel) (":localhost 403 " + client + " " + channel + " :No such channel")
+# define ERR_NOTONCHANNEL(client, channel) (":localhost 442 " + client + " " + channel + " :Not on channel")
+# define PART(source, channel, reason) (":" + source + " PART " + channel + " :" + reason)
+
+//KICK
+# define ERR_CHANOPRIVSNEEDED(client, channel) (":localhost 482 " + client + " " + channel + " :You are not channel operator")
+# define ERR_USERNOTINCHANNEL(client, nick, channel) (":localhost 441 " + client + " " + nick + " " + channel + " :They are not on that channel")
+# define KICK(source, channel, nick, reason) (":" + source + " KICK " + channel + " " + nick + " :" + reason)
+
+//INVITE
+# define ERR_USERONCHANNEL(client, nick, channel) (":localhost 443 " + client + " " + nick + " " + channel + " :is already on channel")
+# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel)
+# define INVITE(client, nick, channel) (":" + client + " INVITE " + nick + " " + channel)
+
+//MODE
+# define RPL_CHANNELMODEIS(client, channel, mode) (":localhost 324 " + client + " " + channel + " :" + mode)
 
 #endif

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <set>
 
+//TODO only pass nick and user ntil registration done
 Server::CommMap	Server::init_commands_map(void)
 {
 	CommMap comms;
@@ -17,6 +18,10 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("JOIN"), &Server::join));
 	comms.insert(std::make_pair(std::string("PRIVMSG"), &Server::privmsg));
 	comms.insert(std::make_pair(std::string("PART"), &Server::part));
+	comms.insert(std::make_pair(std::string("KICK"), &Server::kick));
+	comms.insert(std::make_pair(std::string("INVITE"), &Server::invite));
+	comms.insert(std::make_pair(std::string("MODE"), &Server::mode));
+	comms.insert(std::make_pair(std::string("TOPIC"), &Server::topic));
 	return (comms);
 }
 
@@ -175,7 +180,7 @@ void	Server::join(Client &client, Command &command)
 	else //try to connect to existing channel
 	{
 		try {
-			Channel &chan = channelFromName(name); //TODO add pw
+			Channel &chan = channelFromName(name);
 			if (args.size() >= 2)
 				chan.join(client, args[1]);
 			else
@@ -193,6 +198,7 @@ void	Server::join(Client &client, Command &command)
 void	Server::privmsg(Client &client, Command &command)
 {
 	//TODO implement privmsg
+	std::cout << "====== NOT IMPLEMENTED ======" << std::endl;
 	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
@@ -207,19 +213,183 @@ void	Server::part(Client &client, Command &command)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
-	} //TODO add error checking PART
+	}
 	if (!channelExists(args[0]))
 	{
-		//TODO nosuchchan
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[0]));
 		return ;
 	}
 	Channel	&chan = channelFromName(args[0]);
 	std::vector<std::string> chan_nicks = chan.getUsersNicks();
-	if (std::find(chan_nicks.begin(), chan_nicks.end(), client.getNickname()) != chan_nicks.end())
+	if (chan.isInChannel(client))
 	{
+		chan.removeFromChannel(client);
+		if (args.size() < 2) // TODO think about source
+		{
+			client.appendSend(PART(std::string("localhost"), args[0], ""));
+			broadcast(PART(client.getNickname(), args[0], ""), chan.getUsersNicks());
+		}
+		else
+		{
+			client.appendSend(PART(std::string("localhost"), args[0], args[1]));
+			broadcast(PART(client.getNickname(), args[0], args[1]), chan.getUsersNicks());
+		}
+	}
+	else
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[0]));
+}
+
+void	Server::kick(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() < 2)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	if (!channelExists(args[0]))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[0]));
+		return ;
+	}
+	Channel	&chan = channelFromName(args[0]);
+	if (!chan.isOperator(client))
+	{
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), args[0]));
+		return ;
+	}
+	std::vector<std::string> chan_nicks = chan.getUsersNicks();
+	if (std::find(chan_nicks.begin(), chan_nicks.end(), args[1]) == chan_nicks.end())
+	{
+		client.appendSend(ERR_USERNOTINCHANNEL(client.getNickname(), args[1], args[0]));
+		return ;
+	}
+	if (chan.isInChannel(client))
+	{
+		Client &to_remove = clientFromNick(args[1]);
+		if (args.size() >= 3)
+			broadcast(KICK(client.getNickname(), args[0], args[1], args[2]), chan.getUsersNicks());
+		else
+			broadcast(KICK(client.getNickname(), args[0], args[1], ""), chan.getUsersNicks());
+		chan.removeFromChannel(to_remove);
+	}
+	else
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[0]));
+
+}
+void	Server::invite(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() < 2)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string	chan_name = args[1];
+	std::string	invited_nick = args[0];
+	if (!channelExists(chan_name))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), chan_name));
+		return ;
+	}
+	Channel	&chan = channelFromName(chan_name);
+	if (!chan.isInChannel(client))
+	{
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), chan_name));
+		return ;
+	}
+	std::vector<std::string> chan_nicks = chan.getUsersNicks();
+	if (std::find(chan_nicks.begin(), chan_nicks.end(), chan_name) != chan_nicks.end())
+	{
+		client.appendSend(ERR_USERONCHANNEL(client.getNickname(), invited_nick, chan_name));
+		return ;
+	}
+	if (!chan.isOperator(client) && chan.getInviteOnly())
+	{
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), chan_name));
+		return ;
+	}
+	client.appendSend(RPL_INVITING(client.getNickname(), invited_nick, chan_name));
+	Client	&invited = clientFromNick(invited_nick);
+	chan.invite(invited);
+	invited.appendSend(INVITE(client.getNickname(), invited_nick, chan_name));
+}
+
+void	Server::mode(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() < 1)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string target = args[0];
+	if (!channelExists(target))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
+		return ;
+	}
+	Channel	&chan = channelFromName(target);
+	if (args.size() == 1) //show mode
+		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
+	else if (chan.isOperator(client)) //set mode
+	{
+		chan.changeMode(args, client);
+		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
+	}
+	else
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
+}
+
+void	Server::topic(Client &client, Command &command)
+{
+	//TODO implement
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() == 0)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string target = args[0];
+	if (!channelExists(target))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
+		return ;
+	}
+	Channel	&chan = channelFromName(target);
+	if (!chan.isInChannel(client))
+	{
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), target));
+		return ;
+	}
+	if (args.size() > 1)
+	{
+		if (!chan.isOperator(client) && chan.getTopicOperator())
+		{
+			client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
+			return ;
+		}
+		chan.setTopic(args[1]);
+		std::string topic = chan.getTopic();
+		if (topic.empty())
+			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+		else
+			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
 	}
 	else
 	{
-		//TODO notonchan
+		std::string topic = chan.getTopic();
+		if (topic.empty())
+			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+		else
+			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
 	}
 }

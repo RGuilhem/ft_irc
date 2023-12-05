@@ -18,20 +18,29 @@ class Channel
 		bool                invite_only;
 		bool                topic_operator;
 		std::string         password;
-		unsigned int		user_limit;
+		int					user_limit;
 
 		Channel(void);
+		void addMode(char mode, std::string arg);
+		void delMode(char mode);
 	public:
 		Channel(std::string const &name, Client &creator);
 
 		std::string getName(void) const;
 		std::string getTopic(void) const;
+		bool		getTopicOperator(void) const;
+		void		setTopic(std::string top);
 		void        join(Client &client, std::string pass);
 		void		greet(Client &client);
 
 		std::vector<std::string> getUsersNicks(void) const;
 		bool	isInChannel(Client const &client) const;
+		bool	isOperator(Client const &client) const;
+		bool	getInviteOnly(void) const;
+		void	invite(Client &client);
 		void	removeFromChannel(Client const &client);
+		std::string	modeString(void) const;
+		void changeMode(std::vector<std::string> args, Client &client);
 };
 
 #endif
