@@ -21,6 +21,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("KICK"), &Server::kick));
 	comms.insert(std::make_pair(std::string("INVITE"), &Server::invite));
 	comms.insert(std::make_pair(std::string("MODE"), &Server::mode));
+	comms.insert(std::make_pair(std::string("TOPIC"), &Server::topic));
 	return (comms);
 }
 
@@ -344,4 +345,51 @@ void	Server::mode(Client &client, Command &command)
 	}
 	else
 		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
+}
+
+void	Server::topic(Client &client, Command &command)
+{
+	//TODO implement
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() == 0)
+	{
+		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
+		return ;
+	}
+	std::string target = args[0];
+	if (!channelExists(target))
+	{
+		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
+		return ;
+	}
+	Channel	&chan = channelFromName(target);
+	if (args.size() > 1)
+	{
+		if (!chan.isOperator(client) && chan.getTopicOperator())
+		{
+			client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
+			return ;
+		}
+		if (chan.isInChannel(client))
+		{
+			chan.setTopic(args[1]);
+			std::string topic = chan.getTopic();
+			if (topic.empty())
+				client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+			else
+				client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+		}
+		else
+			client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), target));
+	}
+	else
+	{
+		std::string topic = chan.getTopic();
+		if (topic.empty())
+			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+		else
+			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+	}
 }

@@ -31,6 +31,7 @@
 # define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " " + channel + " :Cannot join channel (+l)")
 # define ERR_BANNEDFROMCHAN(client, channel) (":localhost 474 " + client + " " + channel + " :Cannot join channel (+b)")
 # define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " " + channel + " :" + topic)
+# define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " " + channel + " :No topic set")
 # define RPL_NAMREPLY(client, channel, name) (":localhost 353 " + client + " = " + channel + " :" + name)
 # define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /Nameslist")
 

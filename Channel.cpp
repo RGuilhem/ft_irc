@@ -30,6 +30,16 @@ std::string Channel::getTopic(void) const
 	return (topic);
 }
 
+bool		Channel::getTopicOperator(void) const
+{
+	return (topic_operator);
+}
+
+void		Channel::setTopic(std::string top)
+{
+	topic = top;
+}
+
 void Channel::join(Client &client, std::string pass)
 {
 	if (std::find(users.begin(), users.end(), client) != users.end())
@@ -58,6 +68,8 @@ void	Channel::greet(Client &client)
 {
 	if (!topic.empty())
 		client.appendSend(RPL_TOPIC(client.getNickname(), name, topic));
+	else
+		client.appendSend(RPL_NOTOPIC(client.getNickname(), name));
 	for (unsigned int i = 0; i < users.size(); i++)
 		client.appendSend(RPL_NAMREPLY(client.getNickname(), name, users[i].getNickname()));
 	client.appendSend(RPL_ENDOFNAMES(client.getNickname(), name));

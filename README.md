@@ -19,7 +19,7 @@
 - [x] KICK
 - [x] INVITE
 - [ ] OPER
-- [ ] TOPIC
+- [x] TOPIC
 - [x] MODE
 
 ### Bonus

@@ -28,6 +28,8 @@ class Channel
 
 		std::string getName(void) const;
 		std::string getTopic(void) const;
+		bool		getTopicOperator(void) const;
+		void		setTopic(std::string top);
 		void        join(Client &client, std::string pass);
 		void		greet(Client &client);
 
