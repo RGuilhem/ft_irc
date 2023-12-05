@@ -7,10 +7,11 @@
 - [x] hostname and ip info for clients
 - [x] Logging capability
 - [x] client registration PASS NICK USER
-- [ ] PRIVMSG
+- [x ] PRIVMSG
 - [x] QUIT
-- [ ] AWAY ??
 - [x] Server replies
+- [ ] A lot of testing
+- [ ] irssi connection to server
 
 ### Channel
 
