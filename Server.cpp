@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/05 17:05:09 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/05 17:18:54 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void	Server::newConnection(std::vector<pollfd> &pollfds)
 void	Server::parseMessage(Client &client)
 {
 	std::string	message = client.getReadBuff();
-	if (message.find("\r\n") != std::string::npos && message.size() != 2)
+	while (message.find("\r\n") != std::string::npos && message.size() != 2)
 	{
 		logmsg(BLUE "<- " + client.getNickname() + ": " + client.nextRead());
 		try {
@@ -190,6 +190,7 @@ void	Server::parseMessage(Client &client)
 			std::cerr << e.what() << std::endl;
 		}
 		client.clearNextRead();
+		message = client.getReadBuff();
 	}
 }
 
