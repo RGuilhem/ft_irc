@@ -365,6 +365,11 @@ void	Server::topic(Client &client, Command &command)
 		return ;
 	}
 	Channel	&chan = channelFromName(target);
+	if (!chan.isInChannel(client))
+	{
+		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), target));
+		return ;
+	}
 	if (args.size() > 1)
 	{
 		if (!chan.isOperator(client) && chan.getTopicOperator())
@@ -372,17 +377,12 @@ void	Server::topic(Client &client, Command &command)
 			client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
 			return ;
 		}
-		if (chan.isInChannel(client))
-		{
-			chan.setTopic(args[1]);
-			std::string topic = chan.getTopic();
-			if (topic.empty())
-				client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
-			else
-				client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
-		}
+		chan.setTopic(args[1]);
+		std::string topic = chan.getTopic();
+		if (topic.empty())
+			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
 		else
-			client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), target));
+			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
 	}
 	else
 	{

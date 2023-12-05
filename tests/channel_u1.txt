@@ -4,8 +4,8 @@ NICK u1
 CAP END
 USER u1 0 * :u1
 JOIN #channel
-JOIN #other
 TOPIC #other :A beautiful topic for #other
+JOIN #other
 MODE #channel +kli pass 5
 MODE #channel -k+t
 PING 1

@@ -9,6 +9,7 @@ PING 3
 JOIN #channel
 MODE #channel
 MODE #channel +k test
+TOPIC #other
 JOIN #other
 PART #nosuchchan
 PART #other :Going out
