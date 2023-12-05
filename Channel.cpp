@@ -1,6 +1,7 @@
 #include "Channel.hpp"
 #include "Replies.hpp"
 #include "Server.hpp"
+#include "Replies.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -37,7 +38,7 @@ void Channel::join(Client &client, std::string pass)
 		throw std::invalid_argument(ERR_BADCHANNELKEY(client.getNickname(), name));
 	if (invite_only && std::find(invited.begin(), invited.end(), client) == invited.end())
 		throw std::invalid_argument(ERR_INVITEONLYCHAN(client.getNickname(), name));
-	if (user_limit > 0 && users.size() > (unsigned int) user_limit)
+	if (user_limit > 0 && users.size() >= (unsigned int) user_limit)
 		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), name));
 	if (std::find(banned.begin(), banned.end(), client) != banned.end())
 		throw std::invalid_argument(ERR_BANNEDFROMCHAN(client.getNickname(), name));
@@ -118,4 +119,74 @@ std::string	Channel::modeString(void) const
 	if (!mode.empty())
 		mode.insert(0, "+");
 	return (mode);
+}
+
+void Channel::addMode(char mode, std::string args)
+{
+	//TODO add o
+	if (mode == 'k')
+		password = args;
+	else if (mode == 'l')
+	{
+		int new_limit = atoi(args.c_str());
+		if (new_limit > 0)
+			user_limit = new_limit;
+	}
+	else if (mode == 'i')
+		invite_only = true;
+	else if (mode == 't')
+		topic_operator = true;
+	else if (mode == 'o')
+	{
+	}
+}
+
+void Channel::delMode(char mode)
+{
+	//TODO add o
+	if (mode == 'k')
+		password = "";
+	else if (mode == 'l')
+		user_limit = -1;
+	else if (mode == 'i')
+		invite_only = false;
+	else if (mode == 't')
+		topic_operator = false;
+	else if (mode == 'o')
+	{
+	}
+}
+
+void	Channel::changeMode(std::vector<std::string> args, Client &client)
+{
+	//TODO add o
+	std::string mode = args[1];
+	std::vector<std::string> mode_args(args.begin() + 2, args.end());
+
+	for (unsigned int i = 0; i <  mode_args.size(); i++)
+	{
+		std::cout << mode_args[i] << std::endl;
+	}
+	if (mode[0] != '+' && mode[0] != '-')
+		return ;
+	bool			add = false;
+	unsigned int	args_pos = 0;
+	for (unsigned int i = 0; i <  mode.length(); i++)
+	{
+		if (mode[i] == '+')
+			add = true;
+		else if (mode[i] == '-')
+			add = false;
+		else if (add)
+		{
+			if (args_pos == mode_args.size() && (mode[i] == 'k' || mode[i] == 'l'))
+				client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
+			else if (args_pos == mode_args.size()) 
+				addMode(mode[i], "");
+			else
+				addMode(mode[i], mode_args[args_pos++]);
+		}
+		else
+			delMode(mode[i]);
+	}
 }

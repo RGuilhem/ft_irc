@@ -4,10 +4,12 @@ CAP * LS
 NICK u2
 CAP END
 USER u2 0 * :u2
-JOIN #channel
 PING 1
 PING 2
 PING 3
+JOIN #channel
+MODE #channel
+MODE #channel +k test
 JOIN #other
 PART #nosuchchan
 PART #other :Going out

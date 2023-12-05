@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <set>
 
+//TODO only pass nick and user ntil registration done
 Server::CommMap	Server::init_commands_map(void)
 {
 	CommMap comms;
@@ -336,8 +337,8 @@ void	Server::mode(Client &client, Command &command)
 	Channel	&chan = channelFromName(target);
 	if (args.size() == 1) //show mode
 		client.appendSend(RPL_CHANNELMODEIS(client.getNickname(), target, chan.modeString()));
-	else //set mode
-	{
-		std::string mode = args[1];
-	}
+	else if (chan.isOperator(client)) //set mode
+		chan.changeMode(args, client);
+	else
+		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), target));
 }

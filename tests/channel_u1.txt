@@ -6,12 +6,14 @@ CAP END
 USER u1 0 * :u1
 JOIN #channel
 JOIN #other
+MODE #channel +kli pass 5
+MODE #channel
+MODE #channel -i+t
 PING 1
-INVITE u2 #other
+INVITE u2 #channel
 NICK u2
 PING 2
 PING 3
 NICK u2
 PING 4
-MODE #other
 QUIT :Exiting u1
