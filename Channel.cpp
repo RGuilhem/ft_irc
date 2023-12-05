@@ -128,7 +128,6 @@ std::string	Channel::modeString(void) const
 
 void Channel::addMode(char mode, std::string args)
 {
-	//TODO add o
 	if (mode == 'k')
 		password = args;
 	else if (mode == 'l')
@@ -141,14 +140,10 @@ void Channel::addMode(char mode, std::string args)
 		invite_only = true;
 	else if (mode == 't')
 		topic_operator = true;
-	else if (mode == 'o')
-	{
-	}
 }
 
 void Channel::delMode(char mode)
 {
-	//TODO add o
 	if (mode == 'k')
 		password = "";
 	else if (mode == 'l')
@@ -157,14 +152,10 @@ void Channel::delMode(char mode)
 		invite_only = false;
 	else if (mode == 't')
 		topic_operator = false;
-	else if (mode == 'o')
-	{
-	}
 }
 
 void	Channel::changeMode(std::vector<std::string> args, Client &client)
 {
-	//TODO add o
 	std::string mode = args[1];
 	std::vector<std::string> mode_args(args.begin() + 2, args.end());
 
