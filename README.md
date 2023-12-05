@@ -31,3 +31,5 @@
 ## Ressources
 
 https://modern.ircdocs.horse/
+For irssi:
+/connect -nocap -host localhost 127.0.0.1 1500 test guigui
