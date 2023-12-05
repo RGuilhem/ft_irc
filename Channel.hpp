@@ -33,7 +33,7 @@ class Channel
 		bool	isInChannel(Client const &client) const;
 		bool	isOperator(Client const &client) const;
 		bool	getInviteOnly(void) const;
-		void	invite(std::string nick);
+		void	invite(Client &client);
 		void	removeFromChannel(Client const &client);
 };
 

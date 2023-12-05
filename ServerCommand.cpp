@@ -177,7 +177,7 @@ void	Server::join(Client &client, Command &command)
 	else //try to connect to existing channel
 	{
 		try {
-			Channel &chan = channelFromName(name); //TODO add pw
+			Channel &chan = channelFromName(name);
 			if (args.size() >= 2)
 				chan.join(client, args[1]);
 			else
@@ -285,12 +285,12 @@ void	Server::invite(Client &client, Command &command)
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
 		return ;
 	}
-	if (!channelExists(args[0]))
+	if (!channelExists(args[1]))
 	{
 		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), args[1]));
 		return ;
 	}
-	Channel	&chan = channelFromName(args[0]);
+	Channel	&chan = channelFromName(args[1]);
 	if (!chan.isInChannel(client))
 	{
 		client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), args[1]));
@@ -307,6 +307,8 @@ void	Server::invite(Client &client, Command &command)
 		client.appendSend(ERR_CHANOPRIVSNEEDED(client.getNickname(), args[1]));
 		return ;
 	}
-	//TODO change RPL_INVITING and add to invited
-	client.appendSend(INVITE(client.getNickname(), args[0], args[1]));
+	client.appendSend(RPL_INVITING(client.getNickname(), args[0], args[1]));
+	Client	&invited = clientFromNick(args[0]);
+	chan.invite(invited);
+	invited.appendSend(INVITE(client.getNickname(), args[0], args[1]));
 }

@@ -46,6 +46,7 @@
 
 //INVITE
 # define ERR_USERONCHANNEL(client, nick, channel) (":localhost 443 " + client + " " + nick + " " + channel + " :is already on channel")
+# define RPL_INVITING(client, nick, channel) (":localhost 341 " + client + " " + nick + " " + channel)
 # define INVITE(client, nick, channel) (":" + client + " INVITE " + nick + " " + channel)
 
 #endif

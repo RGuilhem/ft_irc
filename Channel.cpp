@@ -16,7 +16,7 @@ Channel::Channel(std::string const &name, Client &creator)
 	operators.push_back(creator);
 	users.push_back(creator);
 	creator.appendSend(JOIN(creator.getNickname(), name));
-	greet(creator); //TODO change greeting
+	greet(creator);
 }
 
 std::string Channel::getName(void) const
@@ -31,7 +31,6 @@ std::string Channel::getTopic(void) const
 
 void Channel::join(Client &client, std::string pass)
 {
-	//TODO throw on invalid join
 	if (std::find(users.begin(), users.end(), client) != users.end())
 		throw std::invalid_argument("");
 	if (pass != this->password)
@@ -42,7 +41,6 @@ void Channel::join(Client &client, std::string pass)
 		throw std::invalid_argument(ERR_CHANNELISFULL(client.getNickname(), name));
 	if (std::find(banned.begin(), banned.end(), client) != banned.end())
 		throw std::invalid_argument(ERR_BANNEDFROMCHAN(client.getNickname(), name));
-	//if everything is okay add client
 	users.push_back(client);
 }
 
@@ -57,7 +55,6 @@ std::vector<std::string> Channel::getUsersNicks(void) const
 
 void	Channel::greet(Client &client)
 {
-	std::cout << "Greeting" << std::endl;
 	if (!topic.empty())
 		client.appendSend(RPL_TOPIC(client.getNickname(), name, topic));
 	for (unsigned int i = 0; i < users.size(); i++)
@@ -96,4 +93,9 @@ void	Channel::removeFromChannel(Client const &client)
 bool	Channel::getInviteOnly(void) const
 {
 	return (invite_only);
+}
+
+void	Channel::invite(Client &client)
+{
+	invited.push_back(client);
 }
