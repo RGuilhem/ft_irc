@@ -14,13 +14,13 @@
 
 ### Channel
 
-- [ ] message forwarding
 - [x] JOIN
 - [x] PART
 - [x] KICK
-- [ ] INVITE
+- [x] INVITE
+- [ ] OPER
 - [ ] TOPIC
-- [ ] MODE
+- [x] MODE
 
 ### Bonus
 
