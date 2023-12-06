@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 11:45:19 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 14:03:00 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void	Server::parseMessage(Client &client)
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	char	buff[BUFF_SIZE] = "";
-	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
+	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0);
 	if (received > 0)
 	{
 		clients.at(pfd.fd).appendRead(buff);
