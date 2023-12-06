@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:42:49 by graux             #+#    #+#             */
-/*   Updated: 2023/11/24 19:17:21 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 11:30:27 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char *argv[])
 		try {
 			serv.run();
 		} catch (std::exception &e) {
-			std::cout << "Server shutdown" << std::endl;
+			std::cout << RESET_COL "Server shutdown" << std::endl;
 		}
 	}
 	else

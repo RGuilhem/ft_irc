@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <set>
 
-//TODO only pass nick and user ntil registration done
 Server::CommMap	Server::init_commands_map(void)
 {
 	CommMap comms;
@@ -22,6 +21,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("INVITE"), &Server::invite));
 	comms.insert(std::make_pair(std::string("MODE"), &Server::mode));
 	comms.insert(std::make_pair(std::string("TOPIC"), &Server::topic));
+	comms.insert(std::make_pair(std::string("WHO"), &Server::who));
 	return (comms);
 }
 
@@ -62,7 +62,7 @@ void	Server::nick(Client &client, Command &command)
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
-	if (args.size() < 1)
+	if (args.size() < 1 || args[0].empty())
 	{
 		client.appendSend(ERR_NONICKNAMEGIVEN(client.getNickname()));
 		return ;
@@ -72,7 +72,7 @@ void	Server::nick(Client &client, Command &command)
 		client.appendSend(ERR_NICKNAMEINUSE(client.getNickname(), args[0]));
 		return ;
 	}
-	if (args[0].find_first_of(":# ") != std::string::npos || args[0].size() == 0) //TODO , invalid
+	if (args[0].find_first_of(":# ,*?@!$.") != std::string::npos || args[0].size() == 0)
 	{
 		client.appendSend(ERR_ERRONEUSNICKNAME(client.getNickname(), args[0]));
 		return ;
@@ -80,10 +80,21 @@ void	Server::nick(Client &client, Command &command)
 	std::string	curr_nick = client.getNickname();
 	client.setNickname(args[0]);
 	nicknames.push_back(args[0]);
-	if (curr_nick.size() != 0) // TODO broadcast nick change to other users
+	if (curr_nick.size() != 0)
 	{
+		std::set<std::string>	to_broadcast;
+		for (unsigned int i = 0; i < channels.size(); i++)
+		{
+			bool is_in = channels[i].isInChannel(client);
+			channels[i].removeFromChannel(client);
+			if (is_in)
+			{
+				std::vector<std::string> names_in_chan = channels[i].getUsersNicks();
+				to_broadcast.insert(names_in_chan.begin(), names_in_chan.end());
+			}
+		}
+		broadcast(":" + curr_nick + " NICK " + args[0], std::vector<std::string>(to_broadcast.begin(), to_broadcast.end()));
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
-		client.appendSend(":" + curr_nick + " NICK " + args[0]);
 	}
 }
 
@@ -109,7 +120,7 @@ void	Server::user(Client &client, Command &command)
 	{
 		client.appendSend(RPL_WELCOME(client.getNickname(), client.getId()));
 		client.appendSend(RPL_YOURHOST(client.getNickname()));
-		client.appendSend(RPL_CREATED(client.getNickname(), "placeholder date"));
+		client.appendSend(RPL_CREATED(client.getNickname(), start_time));
 		client.appendSend(RPL_MYINFO(client.getNickname()));
 		client.appendSend(RPL_ISUPPORT(client.getNickname()));
 
@@ -130,13 +141,11 @@ void	Server::ping(Client &client, Command &command)
 {
 	std::vector<std::string> args = command.getArgs();
 	if (args.size() != 0)
-		client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
+		client.appendSend(":localhost PONG " + args[0]);
 }
 
 void	Server::quit(Client &client, Command &command)
 {
-	//TODO broadcast quit to channels client is quiting
-	//TODO exit channels
 	std::vector<std::string> args = command.getArgs();
 
 	std::string reason = "";
@@ -167,7 +176,7 @@ void	Server::join(Client &client, Command &command)
 		return ;
 	}
 	std::string	name = args[0];
-	if (name[0] != '#')
+	if (name[0] != '#' || name.find_first_of(" \a,") != std::string::npos)
 	{
 		client.appendSend(ERR_BADCHANMASK(name));
 		return ;
@@ -201,7 +210,6 @@ void	Server::privmsg(Client &client, Command &command)
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
-	
 	if (args.size() < 2)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
@@ -220,7 +228,11 @@ void	Server::privmsg(Client &client, Command &command)
 		{
 			Channel	&chan = channelFromName(target);
 			if (chan.isInChannel(client))
-				broadcast(PRIVMSG(client.getNickname(), target, message), chan.getUsersNicks());
+			{
+				std::vector<std::string> names = chan.getUsersNicks();
+				names.erase(std::find(names.begin(), names.end(), client.getNickname()));
+				broadcast(PRIVMSG(client.getNickname(), target, message), names);
+			}
 		}
 	}
 	else
@@ -247,14 +259,14 @@ void	Server::part(Client &client, Command &command)
 	if (chan.isInChannel(client))
 	{
 		chan.removeFromChannel(client);
-		if (args.size() < 2) // TODO think about source
+		if (args.size() < 2)
 		{
-			client.appendSend(PART(std::string("localhost"), args[0], ""));
+			client.appendSend(PART(client.getNickname(), args[0], ""));
 			broadcast(PART(client.getNickname(), args[0], ""), chan.getUsersNicks());
 		}
 		else
 		{
-			client.appendSend(PART(std::string("localhost"), args[0], args[1]));
+			client.appendSend(PART(client.getNickname(), args[0], args[1]));
 			broadcast(PART(client.getNickname(), args[0], args[1]), chan.getUsersNicks());
 		}
 	}
@@ -353,6 +365,11 @@ void	Server::mode(Client &client, Command &command)
 		return ;
 	}
 	std::string target = args[0];
+	if (std::find(nicknames.begin(), nicknames.end(), target) != nicknames.end())
+	{
+		client.appendSend(RPL_UMODEIS(client.getNickname(), "+i"));
+		return ;
+	}
 	if (!channelExists(target))
 	{
 		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
@@ -372,7 +389,6 @@ void	Server::mode(Client &client, Command &command)
 
 void	Server::topic(Client &client, Command &command)
 {
-	//TODO implement
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
@@ -402,10 +418,12 @@ void	Server::topic(Client &client, Command &command)
 		}
 		chan.setTopic(args[1]);
 		std::string topic = chan.getTopic();
+		std::string response;
 		if (topic.empty())
-			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+			response = RPL_NOTOPIC(client.getNickname(), target);
 		else
-			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+			response = RPL_TOPIC(client.getNickname(), target, topic);
+		broadcast(response, chan.getUsersNicks());
 	}
 	else
 	{
@@ -414,5 +432,28 @@ void	Server::topic(Client &client, Command &command)
 			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
 		else
 			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+	}
+}
+
+void	Server::who(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() >= 1)
+	{
+		std::string target = args[0];
+		if (channelExists(target))
+		{
+			Channel &chan = channelFromName(target);
+			std::vector<std::string> nicks = chan.getUsersNicks();
+			for (unsigned int i = 0; i < nicks.size(); i++)
+			{
+				Client &c = clientFromNick(nicks[i]);
+				client.appendSend(RPL_WHOREPLY(c.getNickname(),
+							target, c.getUsername(), c.getHostname(), c.getRealname()));
+			}
+		}
+		client.appendSend(RPL_ENDOFWHO(client.getNickname(), target));
 	}
 }

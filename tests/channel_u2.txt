@@ -2,7 +2,7 @@ PASS test_pass
 CAP * LS
 NICK u2
 CAP END
-USER u2 0 * :u2
+USER u2_user 0 * :u2 Name
 JOIN #channel
 PRIVMSG #channel :Hello
 PING 1

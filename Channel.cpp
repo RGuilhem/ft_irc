@@ -8,7 +8,6 @@
 Channel::Channel(std::string const &name, Client &creator)
 {
 	this->name = name;
-	//TODO set default channel modes correctly
 	invite_only = false;
 	topic_operator = false;
 	password = "";
@@ -71,7 +70,14 @@ void	Channel::greet(Client &client)
 	else
 		client.appendSend(RPL_NOTOPIC(client.getNickname(), name));
 	for (unsigned int i = 0; i < users.size(); i++)
-		client.appendSend(RPL_NAMREPLY(client.getNickname(), name, users[i].getNickname()));
+	{
+		std::string prefix;
+		if (std::find(operators.begin(), operators.end(), users[i]) != operators.end())
+			prefix = "@";
+		else
+			prefix = "";
+		client.appendSend(RPL_NAMREPLY(client.getNickname(), name, prefix + users[i].getNickname()));
+	}
 	client.appendSend(RPL_ENDOFNAMES(client.getNickname(), name));
 }
 
@@ -168,6 +174,7 @@ void Channel::delMode(char mode)
 
 void	Channel::changeMode(std::vector<std::string> args, Client &client)
 {
+	//TODO maybe mode b to ban/unban?
 	std::string mode = args[1];
 	std::vector<std::string> mode_args(args.begin() + 2, args.end());
 

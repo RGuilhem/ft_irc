@@ -6,12 +6,13 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/05 17:18:54 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 14:03:00 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "Command.hpp"
+#include "Replies.hpp"
 #include <iostream>
 #include <vector>
 #include <unistd.h>
@@ -71,6 +72,14 @@ Server::Server(std::string port_str, std::string pass) : password(pass), port(po
 		std::cerr << "Invalid port number" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
+	char buffer[50];
+	time_t	rawtime;
+	time(&rawtime);
+	struct tm *timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	if (timeinfo)
+		free(timeinfo);
+	start_time = std::string(buffer);
 }
 
 void	Server::lnch(void)
@@ -184,6 +193,14 @@ void	Server::parseMessage(Client &client)
 		logmsg(BLUE "<- " + client.getNickname() + ": " + client.nextRead());
 		try {
 			Command command(client.nextRead());
+			std::string comm = command.getCommand();
+			if (!client.getRegistered() && !(comm == "PASS" || comm == "NICK" || comm == "USER" || comm == "CAP"))
+			{
+				client.appendSend(ERR_NOTREGISTERED(client.getNickname()));
+				client.clearNextRead();
+				message = client.getReadBuff();
+				continue ;
+			}
 			Exec_func	func = commands_map[command.getCommand()];
 			(this->*func)(client, command);
 		} catch (std::exception &e) {
@@ -197,7 +214,7 @@ void	Server::parseMessage(Client &client)
 void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 {
 	char	buff[BUFF_SIZE] = "";
-	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0); //TODO maybe check the flags
+	int	received = recv(pfd.fd, buff, BUFF_SIZE, 0);
 	if (received > 0)
 	{
 		clients.at(pfd.fd).appendRead(buff);
@@ -232,8 +249,8 @@ void	Server::sendClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	sent = send(pfd.fd, message.c_str(), message.size(), 0);
 	if (message.find(":localhost ERROR") != std::string::npos)
 	{
-		clients.erase(clients.find(pfd.fd));
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), client.getNickname()));
+		clients.erase(clients.find(pfd.fd));
 		close(pfd.fd);
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{

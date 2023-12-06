@@ -13,8 +13,9 @@
 # define RPL_WELCOME(client, id) (":localhost 001 " + client + " :Welcome to ircserv, " + id)
 # define RPL_YOURHOST(client) (":localhost 002 " + client + " :Your host is ircserv, running version 0.1")
 # define RPL_CREATED(client, date) (":localhost 003 " + client + " :This server was created " + date)
-# define RPL_MYINFO(client) (":localhost 004 " + client + " ircserv v0.1 <user modes> <channel modes>")
-# define RPL_ISUPPORT(client) (":localhost 005 " + client + " :are supproted by this server")
+# define RPL_MYINFO(client) (":localhost 004 " + client + " ircserv v0.1 i it kl")
+# define RPL_ISUPPORT(client) (":localhost 005 " + client + " :are supported by this server")
+# define ERR_NOTREGISTERED(client) (":localhost 451 " + client + " :You have not registered")
 //MOTD
 # define RPL_MOTDSTART(client) (":localhost 375 " + client + " :- ircserv Message of the day -")
 # define RPL_MOTD(client, line) (":localhost 372 " + client + " :" + line)
@@ -52,9 +53,14 @@
 
 //MODE
 # define RPL_CHANNELMODEIS(client, channel, mode) (":localhost 324 " + client + " " + channel + " :" + mode)
+# define RPL_UMODEIS(client, mode) (":localhost 221 " + client + " " + mode)
 
 //PRIVMSG
 # define PRIVMSG(source, target, message) (":" + source + " PRIVMSG " + target + " :" + message)
 # define ERR_NOSUCHNICK(client, target) (":localhost 401 " + client + " " + target + " :No such nick/target")
+
+//WHO
+# define RPL_WHOREPLY(client, channel, username, host, realname) (":localhost 352 " + client + " " + channel + " " + username + " " + host + " localhost " + client + " H : 1 " + realname)
+# define RPL_ENDOFWHO(client, mask) (":localhost 315 " + client + " " + mask + " :End of WHO list")
 
 #endif

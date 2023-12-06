@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/05 14:24:13 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 13:01:55 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <map>
 # include <vector>
 # include <fstream>
+# include <ctime>
 
 # define BACKLOG 10
 # define BUFF_SIZE 512
@@ -42,6 +43,7 @@ class Server
 	private:
 	static CommMap	commands_map;
 	static CommMap	init_commands_map(void);
+	std::string		start_time;
 	std::string		password;
 	std::string		port;
 	int				iport;
@@ -86,6 +88,7 @@ class Server
 	void	invite(Client &client, Command &command);
 	void	mode(Client &client, Command &command);
 	void	topic(Client &client, Command &command);
+	void	who(Client &client, Command &command);
 };
 
 std::ostream &operator<<(std::ostream &o, const Server &s);
