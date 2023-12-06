@@ -202,7 +202,6 @@ void	Server::privmsg(Client &client, Command &command)
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
-	
 	if (args.size() < 2)
 	{
 		client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), comm));
