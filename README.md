@@ -11,6 +11,7 @@
 	- [x] do not send to self
 - [x] QUIT
 - [x] Server replies
+- [ ] Commands with list of arguments
 - [ ] Do not accept commands until registration complete
 - [ ] A lot of testing
 - [ ] irssi connection to server

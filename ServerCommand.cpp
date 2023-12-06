@@ -72,7 +72,7 @@ void	Server::nick(Client &client, Command &command)
 		client.appendSend(ERR_NICKNAMEINUSE(client.getNickname(), args[0]));
 		return ;
 	}
-	if (args[0].find_first_of(":# ") != std::string::npos || args[0].size() == 0) //TODO , invalid
+	if (args[0].find_first_of(":# ,*?@!$.") != std::string::npos || args[0].size() == 0) //TODO , invalid
 	{
 		client.appendSend(ERR_ERRONEUSNICKNAME(client.getNickname(), args[0]));
 		return ;
@@ -167,7 +167,7 @@ void	Server::join(Client &client, Command &command)
 		return ;
 	}
 	std::string	name = args[0];
-	if (name[0] != '#')
+	if (name[0] != '#' || name.find_first_of(" \a,"))
 	{
 		client.appendSend(ERR_BADCHANMASK(name));
 		return ;
