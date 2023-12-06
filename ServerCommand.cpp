@@ -220,7 +220,11 @@ void	Server::privmsg(Client &client, Command &command)
 		{
 			Channel	&chan = channelFromName(target);
 			if (chan.isInChannel(client))
-				broadcast(PRIVMSG(client.getNickname(), target, message), chan.getUsersNicks());
+			{
+				std::vector<std::string> names = chan.getUsersNicks();
+				names.erase(std::find(names.begin(), names.end(), client.getNickname()));
+				broadcast(PRIVMSG(client.getNickname(), target, message), names);
+			}
 		}
 	}
 	else
