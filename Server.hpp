@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 13:01:55 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 19:00:51 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "Command.hpp"
+# include "Botty.hpp"
 # include <string>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -43,6 +44,7 @@ class Server
 	private:
 	static CommMap	commands_map;
 	static CommMap	init_commands_map(void);
+	Botty			botty;
 	std::string		start_time;
 	std::string		password;
 	std::string		port;

@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Replies.hpp"
+#include "Botty.hpp"
 #include <iostream>
 #include <algorithm>
 #include <set>
@@ -127,6 +128,7 @@ void	Server::user(Client &client, Command &command)
 		client.appendSend(RPL_MOTDSTART(client.getNickname()));
 		client.appendSend(RPL_MOTD(client.getNickname(), "Hello there!"));
 		client.appendSend(RPL_ENDOFMOTD(client.getNickname()));
+		client.appendSend(PRIVMSG(botty.getNickname(), client.getNickname(), botty.greet()));
 	}
 }
 

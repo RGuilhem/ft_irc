@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 14:03:00 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 19:01:58 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ Server::Server(std::string port_str, std::string pass) : password(pass), port(po
 	if (timeinfo)
 		free(timeinfo);
 	start_time = std::string(buffer);
+	nicknames.push_back("botty");
+	botty = Botty();
 }
 
 void	Server::lnch(void)
