@@ -175,6 +175,7 @@ void Channel::delMode(char mode)
 
 void	Channel::changeMode(std::vector<std::string> args, Client &client)
 {
+	//TODO maybe mode b to ban/unban?
 	std::string mode = args[1];
 	std::vector<std::string> mode_args(args.begin() + 2, args.end());
 

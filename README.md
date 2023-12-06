@@ -28,6 +28,7 @@
 - [ ] WHO
 - [x] TOPIC
 - [x] MODE
+	- [ ] o in MODE ???
 
 ### Bonus
 
