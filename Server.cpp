@@ -6,12 +6,13 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 10:08:11 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 11:22:29 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "Command.hpp"
+#include "Replies.hpp"
 #include <iostream>
 #include <vector>
 #include <unistd.h>
@@ -184,6 +185,14 @@ void	Server::parseMessage(Client &client)
 		logmsg(BLUE "<- " + client.getNickname() + ": " + client.nextRead());
 		try {
 			Command command(client.nextRead());
+			std::string comm = command.getCommand();
+			if (!client.getRegistered() && !(comm == "PASS" || comm == "NICK" || comm == "USER"))
+			{
+				client.appendSend(ERR_NOTREGISTERED(client.getNickname()));
+				client.clearNextRead();
+				message = client.getReadBuff();
+				continue ;
+			}
 			Exec_func	func = commands_map[command.getCommand()];
 			(this->*func)(client, command);
 		} catch (std::exception &e) {
