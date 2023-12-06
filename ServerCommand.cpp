@@ -62,7 +62,7 @@ void	Server::nick(Client &client, Command &command)
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
-	if (args.size() < 1)
+	if (args.size() < 1 || args[0].empty())
 	{
 		client.appendSend(ERR_NONICKNAMEGIVEN(client.getNickname()));
 		return ;
