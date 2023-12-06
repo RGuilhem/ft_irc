@@ -357,6 +357,11 @@ void	Server::mode(Client &client, Command &command)
 		return ;
 	}
 	std::string target = args[0];
+	if (std::find(nicknames.begin(), nicknames.end(), target) != nicknames.end())
+	{
+		client.appendSend(RPL_UMODEIS(client.getNickname(), "+i"));
+		return ;
+	}
 	if (!channelExists(target))
 	{
 		client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));

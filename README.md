@@ -17,6 +17,7 @@
 - [x] Do not accept commands until registration complete
 - [ ] A lot of testing
 - [ ] irssi connection to server
+- [ ] abort trap 6 on ^C ???
 
 ### Channel
 
@@ -29,6 +30,7 @@
 - [x] TOPIC
 - [x] MODE
 	- [ ] o in MODE ???
+	- [ ] i for users
 
 ### Bonus
 
