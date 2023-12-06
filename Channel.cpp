@@ -71,7 +71,14 @@ void	Channel::greet(Client &client)
 	else
 		client.appendSend(RPL_NOTOPIC(client.getNickname(), name));
 	for (unsigned int i = 0; i < users.size(); i++)
-		client.appendSend(RPL_NAMREPLY(client.getNickname(), name, users[i].getNickname()));
+	{
+		std::string prefix;
+		if (std::find(operators.begin(), operators.end(), users[i]) != operators.end())
+			prefix = "@";
+		else
+			prefix = "";
+		client.appendSend(RPL_NAMREPLY(client.getNickname(), name, prefix + users[i].getNickname()));
+	}
 	client.appendSend(RPL_ENDOFNAMES(client.getNickname(), name));
 }
 

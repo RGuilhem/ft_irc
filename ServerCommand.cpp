@@ -167,7 +167,7 @@ void	Server::join(Client &client, Command &command)
 		return ;
 	}
 	std::string	name = args[0];
-	if (name[0] != '#' || name.find_first_of(" \a,"))
+	if (name[0] != '#' || name.find_first_of(" \a,") != std::string::npos)
 	{
 		client.appendSend(ERR_BADCHANMASK(name));
 		return ;
