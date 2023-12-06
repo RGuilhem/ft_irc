@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:45:53 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 14:07:02 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/05 16:55:09 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ class Client
 		bool	operator==(Client const &other) const;
 
 		void		appendRead(std::string newData);
+		std::string	nextRead(void) const;
+		void		clearNextRead(void);
 		void		appendSend(std::string newData);
 		void		resetReadBuff(void);
 		void		clearEndReadBuff(void);

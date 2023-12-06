@@ -7,7 +7,8 @@
 - [x] hostname and ip info for clients
 - [x] Logging capability
 - [x] client registration PASS NICK USER
-- [x ] PRIVMSG
+- [x] PRIVMSG
+	- [ ] do not send to self
 - [x] QUIT
 - [x] Server replies
 - [ ] A lot of testing
@@ -20,6 +21,7 @@
 - [x] KICK
 - [x] INVITE
 - [ ] OPER
+- [ ] WHO
 - [x] TOPIC
 - [x] MODE
 
@@ -31,3 +33,5 @@
 ## Ressources
 
 https://modern.ircdocs.horse/
+For irssi:
+/connect -nocap -host localhost 127.0.0.1 1500 test guigui

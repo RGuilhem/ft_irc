@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/12/04 14:06:53 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/05 17:06:53 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ Client::~Client(void)
 void	Client::appendRead(std::string newData)
 {
 	read_buff += newData;
+}
+
+std::string	Client::nextRead(void) const
+{
+	return (read_buff.substr(0, read_buff.find('\r')));
+}
+
+void		Client::clearNextRead(void)
+{
+	read_buff.erase(0, read_buff.find('\n') + 1);
 }
 
 void	Client::appendSend(std::string newData)
