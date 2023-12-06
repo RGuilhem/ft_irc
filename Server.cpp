@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 11:22:29 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 11:42:29 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ Server::Server(std::string port_str, std::string pass) : password(pass), port(po
 		std::cerr << "Invalid port number" << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
+	char buffer[50];
+	time_t	rawtime;
+	time(&rawtime);
+	struct tm *timeinfo = localtime(&rawtime);
+	strftime(buffer, sizeof(buffer), "%d-%m-%Y %H:%M:%S", timeinfo);
+	if (timeinfo)
+		free(timeinfo);
+	start_time = std::string(buffer);
 }
 
 void	Server::lnch(void)

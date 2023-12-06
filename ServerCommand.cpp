@@ -109,7 +109,7 @@ void	Server::user(Client &client, Command &command)
 	{
 		client.appendSend(RPL_WELCOME(client.getNickname(), client.getId()));
 		client.appendSend(RPL_YOURHOST(client.getNickname()));
-		client.appendSend(RPL_CREATED(client.getNickname(), "placeholder date"));
+		client.appendSend(RPL_CREATED(client.getNickname(), start_time));
 		client.appendSend(RPL_MYINFO(client.getNickname()));
 		client.appendSend(RPL_ISUPPORT(client.getNickname()));
 
