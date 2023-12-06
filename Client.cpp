@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 13:20:27 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 14:00:22 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ Client::Client(int i) : fd(i)
 
 Client::~Client(void)
 {
-	//TODO deregister nickname from server nicknames
 }
 
 void	Client::appendRead(std::string newData)

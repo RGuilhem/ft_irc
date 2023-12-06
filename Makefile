@@ -1,5 +1,4 @@
 CC = c++
-#TODO try to add -Weffc++
 FLAGS = -Wall -Wextra -Werror -g -std=c++98
 RM = rm -rf
 

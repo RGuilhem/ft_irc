@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <set>
 
-//TODO only pass nick and user ntil registration done
 Server::CommMap	Server::init_commands_map(void)
 {
 	CommMap comms;
@@ -73,7 +72,7 @@ void	Server::nick(Client &client, Command &command)
 		client.appendSend(ERR_NICKNAMEINUSE(client.getNickname(), args[0]));
 		return ;
 	}
-	if (args[0].find_first_of(":# ,*?@!$.") != std::string::npos || args[0].size() == 0) //TODO , invalid
+	if (args[0].find_first_of(":# ,*?@!$.") != std::string::npos || args[0].size() == 0)
 	{
 		client.appendSend(ERR_ERRONEUSNICKNAME(client.getNickname(), args[0]));
 		return ;
@@ -131,13 +130,11 @@ void	Server::ping(Client &client, Command &command)
 {
 	std::vector<std::string> args = command.getArgs();
 	if (args.size() != 0)
-		client.appendSend(":localhost PONG " + args[0]); //TODO handle token starting with :
+		client.appendSend(":localhost PONG " + args[0]);
 }
 
 void	Server::quit(Client &client, Command &command)
 {
-	//TODO broadcast quit to channels client is quiting
-	//TODO exit channels
 	std::vector<std::string> args = command.getArgs();
 
 	std::string reason = "";

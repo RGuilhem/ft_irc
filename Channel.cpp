@@ -8,7 +8,6 @@
 Channel::Channel(std::string const &name, Client &creator)
 {
 	this->name = name;
-	//TODO set default channel modes correctly
 	invite_only = false;
 	topic_operator = false;
 	password = "";
