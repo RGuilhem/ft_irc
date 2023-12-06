@@ -208,7 +208,6 @@ void	Server::join(Client &client, Command &command)
 
 void	Server::privmsg(Client &client, Command &command)
 {
-	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
@@ -219,6 +218,11 @@ void	Server::privmsg(Client &client, Command &command)
 	}
 	std::string target = args[0];
 	std::string message = args[1];
+	if (target == botty.getNickname())
+	{
+		botty.handleMsg(client, message);
+		return ;
+	}
 	if (std::find(nicknames.begin(), nicknames.end(), target) != nicknames.end()) //msg to user
 	{
 		Client &c_target = clientFromNick(target);
