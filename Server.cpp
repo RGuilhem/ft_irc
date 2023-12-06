@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 11:42:29 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 11:45:19 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void	Server::parseMessage(Client &client)
 		try {
 			Command command(client.nextRead());
 			std::string comm = command.getCommand();
-			if (!client.getRegistered() && !(comm == "PASS" || comm == "NICK" || comm == "USER"))
+			if (!client.getRegistered() && !(comm == "PASS" || comm == "NICK" || comm == "USER" || comm == "CAP"))
 			{
 				client.appendSend(ERR_NOTREGISTERED(client.getNickname()));
 				client.clearNextRead();
