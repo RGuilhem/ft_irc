@@ -23,6 +23,7 @@
 
 - [x] JOIN
 - [x] PART
+	- [ ] delete chan if empty?
 - [x] KICK
 - [x] INVITE
 - [ ] OPER

@@ -251,14 +251,14 @@ void	Server::part(Client &client, Command &command)
 	if (chan.isInChannel(client))
 	{
 		chan.removeFromChannel(client);
-		if (args.size() < 2) // TODO think about source
+		if (args.size() < 2)
 		{
-			client.appendSend(PART(std::string("localhost"), args[0], ""));
+			client.appendSend(PART(client.getNickname(), args[0], ""));
 			broadcast(PART(client.getNickname(), args[0], ""), chan.getUsersNicks());
 		}
 		else
 		{
-			client.appendSend(PART(std::string("localhost"), args[0], args[1]));
+			client.appendSend(PART(client.getNickname(), args[0], args[1]));
 			broadcast(PART(client.getNickname(), args[0], args[1]), chan.getUsersNicks());
 		}
 	}
