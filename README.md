@@ -8,9 +8,10 @@
 - [x] Logging capability
 - [x] client registration PASS NICK USER
 - [x] PRIVMSG
-	- [ ] do not send to self
+	- [x] do not send to self
 - [x] QUIT
 - [x] Server replies
+- [ ] Do not accept commands until registration complete
 - [ ] A lot of testing
 - [ ] irssi connection to server
 

@@ -2,7 +2,7 @@ PASS test_pass
 CAP * LS
 NICK u1
 CAP END
-USER u1 0 * :u1
+USER u1_user 0 * :u1 Name
 JOIN #channel
 PING 1
 PING 3
