@@ -406,10 +406,12 @@ void	Server::topic(Client &client, Command &command)
 		}
 		chan.setTopic(args[1]);
 		std::string topic = chan.getTopic();
+		std::string response;
 		if (topic.empty())
-			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
+			response = RPL_NOTOPIC(client.getNickname(), target);
 		else
-			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+			response = RPL_TOPIC(client.getNickname(), target, topic);
+		broadcast(response, chan.getUsersNicks());
 	}
 	else
 	{
