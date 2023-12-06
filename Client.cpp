@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 13:50:39 by graux             #+#    #+#             */
-/*   Updated: 2023/12/05 17:06:53 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 13:20:27 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,11 @@ std::string	Client::getRealname(void) const
 void	Client::setRealname(std::string const &val)
 {
 	realname = val;
+}
+
+std::string	Client::getHostname(void) const
+{
+	return (hostname);
 }
 
 bool	Client::operator==(Client const &other) const

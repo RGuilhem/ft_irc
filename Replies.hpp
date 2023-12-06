@@ -59,4 +59,8 @@
 # define PRIVMSG(source, target, message) (":" + source + " PRIVMSG " + target + " :" + message)
 # define ERR_NOSUCHNICK(client, target) (":localhost 401 " + client + " " + target + " :No such nick/target")
 
+//WHO
+# define RPL_WHOREPLY(client, channel, username, host, realname) (":localhost 352 " + client + " " + channel + " " + username + " " + host + " localhost " + client + " H : 1 " + realname)
+# define RPL_ENDOFWHO(client, mask) (":localhost 315 " + client + " " + mask + " :End of WHO list")
+
 #endif

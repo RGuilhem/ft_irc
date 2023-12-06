@@ -22,6 +22,7 @@ Server::CommMap	Server::init_commands_map(void)
 	comms.insert(std::make_pair(std::string("INVITE"), &Server::invite));
 	comms.insert(std::make_pair(std::string("MODE"), &Server::mode));
 	comms.insert(std::make_pair(std::string("TOPIC"), &Server::topic));
+	comms.insert(std::make_pair(std::string("WHO"), &Server::who));
 	return (comms);
 }
 
@@ -381,7 +382,6 @@ void	Server::mode(Client &client, Command &command)
 
 void	Server::topic(Client &client, Command &command)
 {
-	//TODO implement
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
@@ -425,5 +425,28 @@ void	Server::topic(Client &client, Command &command)
 			client.appendSend(RPL_NOTOPIC(client.getNickname(), target));
 		else
 			client.appendSend(RPL_TOPIC(client.getNickname(), target, topic));
+	}
+}
+
+void	Server::who(Client &client, Command &command)
+{
+	std::string	comm = command.getCommand();
+	std::vector<std::string> args = command.getArgs();
+
+	if (args.size() >= 1)
+	{
+		std::string target = args[0];
+		if (channelExists(target))
+		{
+			Channel &chan = channelFromName(target);
+			std::vector<std::string> nicks = chan.getUsersNicks();
+			for (unsigned int i = 0; i < nicks.size(); i++)
+			{
+				Client &c = clientFromNick(nicks[i]);
+				client.appendSend(RPL_WHOREPLY(c.getNickname(),
+							target, c.getUsername(), c.getHostname(), c.getRealname()));
+			}
+		}
+		client.appendSend(RPL_ENDOFWHO(client.getNickname(), target));
 	}
 }
