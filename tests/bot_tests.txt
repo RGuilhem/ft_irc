@@ -2,6 +2,8 @@ PASS test
 NICK u1
 USER u1_user 0 * :u1 Name
 PRIVMSG botty :/help
-PRIVMSG botty :/coucou
-PRIVMSG botty :/other
+PRIVMSG botty :/coinflip
+PRIVMSG botty :/coinflip
+PRIVMSG botty :/coinflip
+PRIVMSG botty :/coinflip
 QUIT :Exiting u1

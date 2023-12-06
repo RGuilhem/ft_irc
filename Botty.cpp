@@ -6,13 +6,15 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:02:06 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 20:26:34 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/06 21:08:29 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Botty.hpp"
 #include "Replies.hpp"
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 
 Botty::CommMap Botty::commands_map = Botty::init_commands_map();
 
@@ -21,6 +23,7 @@ Botty::CommMap	Botty::init_commands_map(void)
 	CommMap	comms;
 
 	comms.insert(std::make_pair(std::string("/help"), &Botty::help));
+	comms.insert(std::make_pair(std::string("/coinflip"), &Botty::coinflip));
 	return (comms);
 }
 
@@ -34,6 +37,7 @@ bool	Botty::isCommand(std::string comm)
 
 Botty::Botty(void)
 {
+	std::srand(std::time(0));
 }
 
 Botty::~Botty(void)
@@ -83,12 +87,28 @@ void	Botty::handleMsg(Client &client, std::string message)
 		(this->*func)(client, command, args);
 	}
 	else
+	{
 		sendMsg(client, "Unknown command");
+		help(client, command, args);
+	}
 }
 
 void	Botty::help(Client &client, std::string command, std::vector<std::string> args)
 {
-	sendMsg(client, "usage: <command> [args...]");
 	(void) command;
 	(void) args;
+	sendMsg(client, "usage: <command> [args...]");
+	sendMsg(client, "Available commands:");
+	sendMsg(client, "	/help -> list available commands, or display help about specific command");
+	sendMsg(client, "	/coinflip -> filp a coin");
+}
+
+void	Botty::coinflip(Client &client, std::string command, std::vector<std::string> args)
+{
+	(void) command;
+	(void) args;
+	if (std::rand() % 2)
+		sendMsg(client, "heads");
+	else
+		sendMsg(client, "tails");
 }
