@@ -7,6 +7,7 @@ SRC = main.cpp			\
 	  Channel.cpp		\
 	  Command.cpp		\
 	  ServerCommand.cpp	\
+	  Botty.cpp			\
 	  Client.cpp
 OBJ = ${SRC:.cpp=.o}
 DEPENDS = ${SRC:.cpp=.d}

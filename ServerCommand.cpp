@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "Replies.hpp"
+#include "Botty.hpp"
 #include <iostream>
 #include <algorithm>
 #include <set>
@@ -127,6 +128,7 @@ void	Server::user(Client &client, Command &command)
 		client.appendSend(RPL_MOTDSTART(client.getNickname()));
 		client.appendSend(RPL_MOTD(client.getNickname(), "Hello there!"));
 		client.appendSend(RPL_ENDOFMOTD(client.getNickname()));
+		client.appendSend(PRIVMSG(botty.getNickname(), client.getNickname(), botty.greet()));
 	}
 }
 
@@ -206,7 +208,6 @@ void	Server::join(Client &client, Command &command)
 
 void	Server::privmsg(Client &client, Command &command)
 {
-	(void) client;
 	std::string	comm = command.getCommand();
 	std::vector<std::string> args = command.getArgs();
 
@@ -217,6 +218,11 @@ void	Server::privmsg(Client &client, Command &command)
 	}
 	std::string target = args[0];
 	std::string message = args[1];
+	if (target == botty.getNickname())
+	{
+		botty.handleMsg(client, message);
+		return ;
+	}
 	if (std::find(nicknames.begin(), nicknames.end(), target) != nicknames.end()) //msg to user
 	{
 		Client &c_target = clientFromNick(target);
