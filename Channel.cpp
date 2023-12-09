@@ -4,6 +4,7 @@
 #include "Replies.hpp"
 #include <algorithm>
 #include <iostream>
+#include <sstream>
 
 Channel::Channel(std::string const &name, Client &creator)
 {
@@ -135,8 +136,12 @@ std::string	Channel::modeString(void) const
 	}
 	if (user_limit != -1)
 	{
+        std::stringstream ss;  
+        std::string tmp;
+        ss << user_limit;  
+        ss >> tmp;
 		mode += "l";
-		end += " " + std::to_string(user_limit);
+		end += " " + tmp;
 	}
 	if (!mode.empty())
 		mode.insert(0, "+");
