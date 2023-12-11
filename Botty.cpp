@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:02:06 by graux             #+#    #+#             */
-/*   Updated: 2023/12/11 06:46:25 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/11 06:54:30 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,5 @@ void	Botty::list(Client &client, std::string command, std::vector<std::string> a
 	sendMsg(client, "INVITE <nickname> <channel>");
 	sendMsg(client, "TOPIC <channel> <topic>");
 	sendMsg(client, "MODE <target> <modestring> [args]");
-	sendMsg(client, "QUIT :<message>");
+	sendMsg(client, "quit :<message>");
 }
