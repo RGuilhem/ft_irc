@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:02:06 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 21:08:29 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/11 06:46:25 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ Botty::CommMap	Botty::init_commands_map(void)
 
 	comms.insert(std::make_pair(std::string("/help"), &Botty::help));
 	comms.insert(std::make_pair(std::string("/coinflip"), &Botty::coinflip));
+	comms.insert(std::make_pair(std::string("/list"), &Botty::list));
 	return (comms);
 }
 
@@ -101,6 +102,7 @@ void	Botty::help(Client &client, std::string command, std::vector<std::string> a
 	sendMsg(client, "Available commands:");
 	sendMsg(client, "	/help -> list available commands, or display help about specific command");
 	sendMsg(client, "	/coinflip -> filp a coin");
+	sendMsg(client, "	/list -> list available IRC commands");
 }
 
 void	Botty::coinflip(Client &client, std::string command, std::vector<std::string> args)
@@ -111,4 +113,19 @@ void	Botty::coinflip(Client &client, std::string command, std::vector<std::strin
 		sendMsg(client, "heads");
 	else
 		sendMsg(client, "tails");
+}
+
+void	Botty::list(Client &client, std::string command, std::vector<std::string> args)
+{
+	(void) command;
+	(void) args;
+	sendMsg(client, "PRIVMSG <target> :<message>");
+	sendMsg(client, "NICK <new_nick>");
+	sendMsg(client, "JOIN <channel>");
+	sendMsg(client, "PART <channel>");
+	sendMsg(client, "KICK <channel> <nickname>");
+	sendMsg(client, "INVITE <nickname> <channel>");
+	sendMsg(client, "TOPIC <channel> <topic>");
+	sendMsg(client, "MODE <target> <modestring> [args]");
+	sendMsg(client, "QUIT :<message>");
 }

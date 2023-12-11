@@ -1,4 +1,4 @@
-PASS test
+PASS test_pass
 NICK u1
 USER u1_user 0 * :u1 Name
 PRIVMSG botty :/help
@@ -6,4 +6,5 @@ PRIVMSG botty :/coinflip
 PRIVMSG botty :/coinflip
 PRIVMSG botty :/coinflip
 PRIVMSG botty :/coinflip
+PRIVMSG botty :/list
 QUIT :Exiting u1
