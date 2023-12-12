@@ -13,19 +13,19 @@
 
 	Networking special
 
-   - [ ] Just like in the subject, using nc, try to send partial commands. Check that the server answers correctly. With a partial command sent, ensure that other connections still run fine.
-   - [ ] Unexpectedly kill a client. Then check that the server is still operational for the other connections and for any new incoming client.
-   - [ ] Unexpectedly kill a nc with just half of a command sent. Check again that the server is not in an odd state or blocked.
-   - [ ] Stop a client (^-Z) connected on a channel. Then flood the channel using another client. The server should not hang. When the client is live again, all stored commands should be processed normally. Also, check for memory leaks during this operation.
+   - [x] Just like in the subject, using nc, try to send partial commands. Check that the server answers correctly. With a partial command sent, ensure that other connections still run fine.
+   - [x] Unexpectedly kill a client. Then check that the server is still operational for the other connections and for any new incoming client.
+   - [x] Unexpectedly kill a nc with just half of a command sent. Check again that the server is not in an odd state or blocked.
+   - [x] Stop a client (^-Z) connected on a channel. Then flood the channel using another client. The server should not hang. When the client is live again, all stored commands should be processed normally. Also, check for memory leaks during this operation.
 
 	Client commands basic
 
-   - [ ] With both nc and the reference IRC client, check that you can authenticate, set a nickname, a username, join a channel. This should be fine (you should have already done this previously).
+   - [x] With both nc and the reference IRC client, check that you can authenticate, set a nickname, a username, join a channel. This should be fine (you should have already done this previously).
    - [ ] Verify that private messages (PRIVMSG) are fully functional with different parameters.
 
 	Client commands operators
 	
-	- [ ] All five
+   - [ ] All five
 
 ### General
 

@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/12 17:17:31 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/12 17:29:06 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,10 @@ void	Server::recvClient(std::vector<pollfd> &pollfds, pollfd &pfd)
 	{
 		std::cerr  << "Client disconnected from fd: " << pfd.fd << std::endl;
 		close(pfd.fd);
+		std::vector<std::string>::iterator match = std::find(nicknames.begin(), nicknames.end(), clients.at(pfd.fd).getNickname());
+		if (match != nicknames.end())
+			nicknames.erase(match);
+		clients.erase(clients.find(pfd.fd));
 		for (unsigned int i = 0; i < pollfds.size(); i++)
 		{
 			if (pfd.fd == pollfds[i].fd)
