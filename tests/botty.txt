@@ -1,0 +1,3 @@
+PASS test_pass
+NICK some_user
+USER su 0 * :Some User

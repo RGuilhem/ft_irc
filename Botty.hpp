@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:02:10 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 21:06:04 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/11 06:38:24 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ class Botty
 
 		void		help(Client &client, std::string command, std::vector<std::string> args);
 		void		coinflip(Client &client, std::string command, std::vector<std::string> args);
+		void		list(Client &client, std::string command, std::vector<std::string> args);
 };
 
 #endif
