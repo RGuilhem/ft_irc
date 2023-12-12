@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/08 19:53:44 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/12 17:17:31 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,8 @@ Server::Server(void)
 
 Server::~Server(void)
 {
-	//TODO Server desctructor
+	//TODO Server desctructor close interfaces and connections
 	std::cerr << "Exiting server" << std::endl;
-	close(sockfd);
 	logfile.close();
 }
 
@@ -97,6 +96,7 @@ void	Server::lnch(void)
 		std::exit(1);
 	}
 	for (p = servinfo; p != NULL; p = p->ai_next) {
+		int	sockfd;
 		if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
 			std::cerr << "Error: Socket" << std::endl;
 			continue ;
@@ -116,16 +116,19 @@ void	Server::lnch(void)
 			continue;
 		}
 		std::cout << "INFO: found a valid node, sockfd: " << sockfd << std::endl;
-		break ;
+		interfaces.push_back(sockfd);
 	}
 	freeaddrinfo(servinfo);
-	if (!p) {
+	if (interfaces.empty()) {
 		std::cerr << "Error: Could not find a binding" << std::endl;
 		std::exit(1);
 	}
-	if (listen(sockfd, BACKLOG) == -1) {
-		std::cerr << "Error: could not start listening" << std::endl;
-		std::exit(1);
+	for (unsigned int i = 0; i < interfaces.size(); i++)
+	{
+		if (listen(interfaces[i], BACKLOG) == -1) {
+			std::cerr << "Error: could not start listening" << std::endl;
+			std::exit(1);
+		}
 	}
 	std::cout << "Server launched" << std::endl;
 }
@@ -135,10 +138,13 @@ void	Server::run(void)
 	std::cout << "Server running..." << std::endl;
 
 	std::vector<pollfd> pollfds;
-	pollfd				listener = {};
-	listener.fd = sockfd;
-	listener.events = POLLIN;
-	pollfds.push_back(listener);
+	for (unsigned int i = 0; i < interfaces.size(); i++)
+	{
+		pollfd	listener = {};
+		listener.fd = interfaces[i];
+		listener.events = POLLIN;
+		pollfds.push_back(listener);
+	}
 
 	while (!server_off)
 	{
@@ -150,13 +156,13 @@ void	Server::run(void)
 		{
 			pollfd	curr_poll = pollfds[i];
 			if (curr_poll.revents & POLLIN) {
-				if (curr_poll.fd == sockfd)
-					this->newConnection(pollfds);
+				if (std::find(interfaces.begin(), interfaces.end(), curr_poll.fd) != interfaces.end())
+					this->newConnection(pollfds, curr_poll.fd);
 				else
 					this->recvClient(pollfds, curr_poll);
 			}
 			else if (curr_poll.revents & POLLOUT) {
-				if (curr_poll.fd != sockfd)
+				if (std::find(interfaces.begin(), interfaces.end(), curr_poll.fd) == interfaces.end())
 					this->sendClient(pollfds, curr_poll);
 			}
 		}
@@ -164,11 +170,11 @@ void	Server::run(void)
 	std::cout << "Server stopped" << std::endl;
 }
 
-void	Server::newConnection(std::vector<pollfd> &pollfds)
+void	Server::newConnection(std::vector<pollfd> &pollfds, int curr_fd)
 {
 	struct sockaddr_storage	remoteaddr;
 	socklen_t				addrlen = sizeof(remoteaddr);
-	int						confd = accept(sockfd, (struct sockaddr *)&remoteaddr, &addrlen);
+	int						confd = accept(curr_fd, (struct sockaddr *)&remoteaddr, &addrlen);
 	if (confd != -1)
 	{
 		pollfd	new_node;

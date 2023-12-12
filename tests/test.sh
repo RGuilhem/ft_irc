@@ -13,7 +13,9 @@ then
 else
     option="-C"
 fi
-cat ./tests/botty.txt | slowcat | nc $option localhost 1500 > /dev/null &
+cat ./tests/channel_u1.txt | slowcat | nc $option localhost 1500 > /dev/null &
+sleep .2
+cat ./tests/channel_u2.txt | slowcat | nc $option localhost 1500 > /dev/null &
 sleep 5
 kill -SIGINT $pid
 #todo kill process juste au cas ou...

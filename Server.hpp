@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:44:52 by graux             #+#    #+#             */
-/*   Updated: 2023/12/06 20:20:20 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/12 17:06:44 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ class Server
 	std::string		password;
 	std::string		port;
 	int				iport;
-	int				sockfd;
-	void			newConnection(std::vector<pollfd> &pollfds);
+	std::vector<int>	interfaces;
+	void			newConnection(std::vector<pollfd> &pollfds, int curr_fd);
 	void			recvClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 	void			sendClient(std::vector<pollfd> &pollfds, pollfd &pfd);
 	void			parseMessage(Client &client);

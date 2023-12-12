@@ -5,7 +5,7 @@
 ### For eval
 	Networking
 
-   - [ ] The server starts, and listens on all network interfaces on the port given from the command line.
+   - [x] The server starts, and listens on all network interfaces on the port given from the command line.
    - [x] Using the 'nc' tool, you can connect to the server, send commands, and the server answers you back.
    - [x] Using this IRC client, you can connect to the server.
    - [x] The server can handle multiple connections at the same time. The server should not block. It should be able to answer all demands. Do some test with the IRC client and nc at the same time.
