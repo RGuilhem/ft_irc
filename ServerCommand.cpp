@@ -240,7 +240,11 @@ void	Server::privmsg(Client &client, Command &command)
 				names.erase(std::find(names.begin(), names.end(), client.getNickname()));
 				broadcast(PRIVMSG(client.getNickname(), target, message), names);
 			}
+			else
+				client.appendSend(ERR_NOTONCHANNEL(client.getNickname(), target));
 		}
+		else
+			client.appendSend(ERR_NOSUCHCHANNEL(client.getNickname(), target));
 	}
 	else
 		client.appendSend(ERR_NOSUCHNICK(client.getNickname(), target));
