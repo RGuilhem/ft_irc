@@ -79,24 +79,25 @@ void	Server::nick(Client &client, Command &command)
 		return ;
 	}
 	std::string	curr_nick = client.getNickname();
-	client.setNickname(args[0]);
-	nicknames.push_back(args[0]);
-	if (curr_nick.size() != 0)
+	std::set<std::string>	to_broadcast;
+	if (curr_nick.length() != 0)
 	{
-		std::set<std::string>	to_broadcast;
 		for (unsigned int i = 0; i < channels.size(); i++)
 		{
 			bool is_in = channels[i].isInChannel(client);
-			channels[i].removeFromChannel(client);
 			if (is_in)
 			{
+				channels[i].changeNick(curr_nick, args[0]);
 				std::vector<std::string> names_in_chan = channels[i].getUsersNicks();
 				to_broadcast.insert(names_in_chan.begin(), names_in_chan.end());
 			}
 		}
-		broadcast(":" + curr_nick + " NICK " + args[0], std::vector<std::string>(to_broadcast.begin(), to_broadcast.end()));
 		nicknames.erase(std::find(nicknames.begin(), nicknames.end(), curr_nick));
+		broadcast(":" + curr_nick + " NICK " + args[0], std::vector<std::string>(to_broadcast.begin(), to_broadcast.end()));
 	}
+	client.setNickname(args[0]);
+	nicknames.push_back(args[0]);
+	client.appendSend(":" + curr_nick + " NICK " + args[0]);
 }
 
 void	Server::user(Client &client, Command &command)

@@ -40,7 +40,8 @@ class Channel
 		void	invite(Client &client);
 		void	removeFromChannel(Client const &client);
 		std::string	modeString(void) const;
-		void changeMode(std::vector<std::string> args, Client &client);
+		void	changeMode(std::vector<std::string> args, Client &client);
+		void	changeNick(std::string old_nick, std::string new_nick);
 };
 
 #endif

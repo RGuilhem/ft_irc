@@ -206,3 +206,24 @@ void	Channel::changeMode(std::vector<std::string> args, Client &client)
 			delMode(mode[i]);
 	}
 }
+
+void	Channel::changeNick(std::string old_nick, std::string new_nick)
+{
+	std::cout << "changing nick of " << old_nick << " to " << new_nick << "in " << name << "\n";
+	for (unsigned int i = 0; i < users.size(); i++) {
+		if (users[i].getNickname() == old_nick)
+			users[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < operators.size(); i++) {
+		if (operators[i].getNickname() == old_nick)
+			operators[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < invited.size(); i++) {
+		if (invited[i].getNickname() == old_nick)
+			invited[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < banned.size(); i++) {
+		if (banned[i].getNickname() == old_nick)
+			banned[i].setNickname(new_nick);
+	}
+}
