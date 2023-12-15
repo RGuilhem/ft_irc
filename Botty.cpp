@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:02:06 by graux             #+#    #+#             */
-/*   Updated: 2023/12/11 06:54:30 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/15 14:26:13 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ Botty::CommMap	Botty::init_commands_map(void)
 {
 	CommMap	comms;
 
-	comms.insert(std::make_pair(std::string("/help"), &Botty::help));
-	comms.insert(std::make_pair(std::string("/coinflip"), &Botty::coinflip));
-	comms.insert(std::make_pair(std::string("/list"), &Botty::list));
+	comms.insert(std::make_pair(std::string("help"), &Botty::help));
+	comms.insert(std::make_pair(std::string("coinflip"), &Botty::coinflip));
+	comms.insert(std::make_pair(std::string("list"), &Botty::list));
 	return (comms);
 }
 
@@ -47,7 +47,7 @@ Botty::~Botty(void)
 
 std::string	Botty::greet(void) const
 {
-	return ("Hello I'm botty you can send me a /help to see what I can do!");
+	return ("Hello I'm botty you can send me help to see what I can do!");
 }
 
 std::string	Botty::getNickname(void) const
@@ -100,9 +100,9 @@ void	Botty::help(Client &client, std::string command, std::vector<std::string> a
 	(void) args;
 	sendMsg(client, "usage: <command> [args...]");
 	sendMsg(client, "Available commands:");
-	sendMsg(client, "	/help -> list available commands, or display help about specific command");
-	sendMsg(client, "	/coinflip -> filp a coin");
-	sendMsg(client, "	/list -> list available IRC commands");
+	sendMsg(client, "    help -> list available commands, or display help about specific command");
+	sendMsg(client, "    coinflip -> filp a coin");
+	sendMsg(client, "    list -> list available IRC commands");
 }
 
 void	Botty::coinflip(Client &client, std::string command, std::vector<std::string> args)

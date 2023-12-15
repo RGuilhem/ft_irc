@@ -21,8 +21,10 @@ class Channel
 		int					user_limit;
 
 		Channel(void);
-		void addMode(char mode, std::string arg);
-		void delMode(char mode);
+		void	addMode(char mode, std::string arg);
+		void	delMode(char mode);
+		void	delOperator(std::string arg);
+		void	addOperator(std::string arg);
 	public:
 		Channel(std::string const &name, Client &creator);
 
@@ -40,7 +42,8 @@ class Channel
 		void	invite(Client &client);
 		void	removeFromChannel(Client const &client);
 		std::string	modeString(void) const;
-		void changeMode(std::vector<std::string> args, Client &client);
+		void	changeMode(std::vector<std::string> args, Client &client);
+		void	changeNick(std::string old_nick, std::string new_nick);
 };
 
 #endif

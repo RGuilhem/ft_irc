@@ -6,7 +6,7 @@
 /*   By: graux <marvin@42lausanne.ch>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:56:28 by graux             #+#    #+#             */
-/*   Updated: 2023/12/12 17:29:06 by graux            ###   ########.fr       */
+/*   Updated: 2023/12/15 16:08:10 by graux            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ Server::Server(void)
 
 Server::~Server(void)
 {
-	//TODO Server desctructor close interfaces and connections
 	std::cerr << "Exiting server" << std::endl;
 	logfile.close();
 }
@@ -150,6 +149,8 @@ void	Server::run(void)
 	{
 		int poll_count = poll((pollfd *)&pollfds[0], (unsigned int) pollfds.size(), -1);
 		if (poll_count == -1) {
+			if (errno == EINTR)
+				break;
 			throw std::exception();
 		}
 		for (unsigned int i = 0; i < pollfds.size(); i++)

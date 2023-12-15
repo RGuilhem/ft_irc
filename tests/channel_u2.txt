@@ -1,11 +1,14 @@
 PASS test_pass
-CAP * LS
 NICK u2
-CAP END
 USER u2_user 0 * :u2 Name
 JOIN #channel
 PRIVMSG #channel :Hello
+MODE #channel +k test
 PING 1
 PING 3
+PING 3
+PING 3
+PING 3
+MODE #channel +k test
 PRIVMSG u1 :Tres bien
 QUIT :Exiting u2

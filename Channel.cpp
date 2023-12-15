@@ -177,9 +177,41 @@ void Channel::delMode(char mode)
 		topic_operator = false;
 }
 
+void	Channel::delOperator(std::string arg)
+{
+	for (unsigned int i = 0; i < operators.size(); i++)
+	{
+		if (operators[i].getNickname() == arg)
+		{
+			operators.erase(operators.begin() + i);
+			break ;
+		}
+	}
+}
+
+void	Channel::addOperator(std::string arg)
+{
+	bool add = true;
+	for (unsigned int i = 0; i < operators.size(); i++)
+	{
+		if (operators[i].getNickname() == arg)
+			add = false;
+	}
+	if (add)
+	{
+		for (unsigned int i = 0; i < users.size(); i++)
+		{
+			if (users[i].getNickname() == arg)
+			{
+				operators.push_back(users[i]);
+				break ;
+			}
+		}
+	}
+}
+
 void	Channel::changeMode(std::vector<std::string> args, Client &client)
 {
-	//TODO maybe mode b to ban/unban?
 	std::string mode = args[1];
 	std::vector<std::string> mode_args(args.begin() + 2, args.end());
 
@@ -193,6 +225,15 @@ void	Channel::changeMode(std::vector<std::string> args, Client &client)
 			add = true;
 		else if (mode[i] == '-')
 			add = false;
+		else if (mode[i] == 'o')
+		{
+			if (args_pos == mode_args.size())
+				client.appendSend(ERR_NEEDMOREPARAMS(client.getNickname(), "MODE"));
+			else if (!add)
+				delOperator(mode_args[args_pos++]);
+			else
+				addOperator(mode_args[args_pos++]);
+		}
 		else if (add)
 		{
 			if (args_pos == mode_args.size() && (mode[i] == 'k' || mode[i] == 'l'))
@@ -204,5 +245,25 @@ void	Channel::changeMode(std::vector<std::string> args, Client &client)
 		}
 		else
 			delMode(mode[i]);
+	}
+}
+
+void	Channel::changeNick(std::string old_nick, std::string new_nick)
+{
+	for (unsigned int i = 0; i < users.size(); i++) {
+		if (users[i].getNickname() == old_nick)
+			users[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < operators.size(); i++) {
+		if (operators[i].getNickname() == old_nick)
+			operators[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < invited.size(); i++) {
+		if (invited[i].getNickname() == old_nick)
+			invited[i].setNickname(new_nick);
+	}
+	for (unsigned int i = 0; i < banned.size(); i++) {
+		if (banned[i].getNickname() == old_nick)
+			banned[i].setNickname(new_nick);
 	}
 }
