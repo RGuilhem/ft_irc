@@ -21,8 +21,10 @@ class Channel
 		int					user_limit;
 
 		Channel(void);
-		void addMode(char mode, std::string arg);
-		void delMode(char mode);
+		void	addMode(char mode, std::string arg);
+		void	delMode(char mode);
+		void	delOperator(std::string arg);
+		void	addOperator(std::string arg);
 	public:
 		Channel(std::string const &name, Client &creator);
 
